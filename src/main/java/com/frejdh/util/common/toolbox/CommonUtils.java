@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * Generic toolbox class.
+ *
+ * @author Kevin Frejdh
  */
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class CommonUtils {

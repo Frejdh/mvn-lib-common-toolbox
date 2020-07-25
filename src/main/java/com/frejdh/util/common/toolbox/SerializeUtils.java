@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.Calendar;
 
 /**
- * Generic serialize handler class.
+ * Generic serialize-handler class.
  *
  * @author Kevin Frejdh
  */
@@ -16,9 +16,9 @@ public class SerializeUtils {
 	/**
 	 * Creates/overrides a filename with serialized data.
 	 *
-	 * @param filename - A string setting the filename.
-	 * @param object   - An object containing the object to save.
-	 * @throws IOException - Throws IOException if the IO is interrupted
+	 * @param filename A string setting the filename.
+	 * @param object   An object containing the object to save.
+	 * @throws IOException Throws IOException if the IO is interrupted
 	 */
 	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static <E> void serializeToFile(String directory, String filename, E object) throws IOException {
@@ -47,12 +47,12 @@ public class SerializeUtils {
 	}
 
 	/**
-	 * Deserializes a filename and returns an object. If text it will return a String.
+	 * Deserializes a filename and returns an object. If text, a String is returned.
 	 *
 	 * @param filename is the string containing the filename.
 	 * @return A list of saved series
-	 * @throws IOException            - Throws IOException if the IO is interrupted
-	 * @throws ClassNotFoundException - If the data in the filename does not represent a java object.
+	 * @throws IOException            Throws IOException if the IO is interrupted
+	 * @throws ClassNotFoundException If the data in the filename does not represent a java object.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <E> E deserializeFromFile(String directory, String filename) throws IOException, ClassNotFoundException {
@@ -83,9 +83,9 @@ public class SerializeUtils {
 	/**
 	 * Creates/overrides a filename with serialized data in JSON format.
 	 *
-	 * @param filename - A string setting the filename.
-	 * @param object   - An object containing the object to save.
-	 * @throws IOException - Throws IOException if the IO is interrupted
+	 * @param filename A string setting the filename.
+	 * @param object   An object containing the object to save.
+	 * @throws IOException Throws an IOException if the IO is interrupted
 	 */
 	public static <E> void serializeToJsonFile(String directory, String filename, E object) throws IOException {
 		serializeToFile(directory, filename,
@@ -102,8 +102,8 @@ public class SerializeUtils {
 	 *
 	 * @param filename is the string containing the filename.
 	 * @return A list of saved series
-	 * @throws IOException            - Throws IOException if the IO is interrupted
-	 * @throws ClassNotFoundException - If the data in the filename does not represent a java object.
+	 * @throws IOException            Throws IOException if the IO is interrupted
+	 * @throws ClassNotFoundException If the data in the filename does not represent a java object.
 	 */
 	public static <E> E deserializeFromJsonFile(String directory, String filename, Class<E> targetClass) throws IOException, ClassNotFoundException {
 		Object retval = deserializeFromFile(directory, filename);

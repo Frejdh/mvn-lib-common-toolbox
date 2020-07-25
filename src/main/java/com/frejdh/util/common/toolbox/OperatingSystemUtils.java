@@ -1,13 +1,20 @@
 package com.frejdh.util.common.toolbox;
 
 /**
- * Stores locations for saved files by Operating system standards.
+ * Util class that detects the OS and helps abstracting their different standards.
+ *
+ * @author Kevin Frejdh
  */
 public class OperatingSystemUtils {
 	private volatile static String name;
-	private volatile static OperatingSystemEnum type;
+	private volatile static OperatingSystemType type;
 
-	public enum OperatingSystemEnum {WINDOWS, MAC, UNIX, UNIDENTIFIED}
+	public enum OperatingSystemType {
+		WINDOWS,
+		MAC,
+		UNIX,
+		UNIDENTIFIED
+	}
 
 	/**
 	 * Get the defined operating system name
@@ -24,19 +31,19 @@ public class OperatingSystemUtils {
 
 	/**
 	 * Return the OS type
-	 * @return An enum of the type {@link OperatingSystemEnum}
+	 * @return An enum of the type {@link OperatingSystemType}
 	 */
-	public static OperatingSystemEnum getType() {
+	public static OperatingSystemType getType() {
 		if (type == null) {
 			synchronized (OperatingSystemUtils.class) {
 				if (isWindows())
-					type = OperatingSystemEnum.WINDOWS;
+					type = OperatingSystemType.WINDOWS;
 				else if (isMac())
-					type = OperatingSystemEnum.MAC;
+					type = OperatingSystemType.MAC;
 				else if (isUnix())
-					type = OperatingSystemEnum.UNIX;
+					type = OperatingSystemType.UNIX;
 				else
-					type = OperatingSystemEnum.UNIDENTIFIED;
+					type = OperatingSystemType.UNIDENTIFIED;
 			}
 		}
 		return type;

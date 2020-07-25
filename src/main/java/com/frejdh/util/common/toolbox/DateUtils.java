@@ -12,6 +12,11 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Util class for date related actions
+ *
+ * @author Kevin Frejdh
+ */
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class DateUtils {
 

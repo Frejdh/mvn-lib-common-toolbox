@@ -3,6 +3,8 @@ package com.frejdh.util.common.exceptions;
 /**
  * Exception, thrown when a value is already set.
  * Can be used to avoid concurrency problems.
+ *
+ * @author Kevin Frejdh
  */
 public class AlreadySetException extends RuntimeException {
 	public AlreadySetException(String msg, Throwable e) {

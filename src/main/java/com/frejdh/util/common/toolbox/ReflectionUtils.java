@@ -5,6 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+/**
+ * Util class for easier usage of reflection.
+ * Please know what you're doing when utilizing this class.
+ *
+ * @author Kevin Frejdh
+ */
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class ReflectionUtils {
 
