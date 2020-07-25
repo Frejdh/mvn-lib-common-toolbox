@@ -24,3 +24,6 @@ To print out request/parsing times in the console, use: `--captureTimes` <br>
     </repository>
 </repositories>
 ```
+
+## Other libraries
+[Search for my other public libraries here](https://github.com/search?q=Frejdh%2Fmvn-lib-).
