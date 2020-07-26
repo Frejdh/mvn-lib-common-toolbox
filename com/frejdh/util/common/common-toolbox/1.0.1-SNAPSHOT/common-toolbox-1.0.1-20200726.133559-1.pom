@@ -68,7 +68,6 @@
                         </goals>
                         <phase>deploy</phase>
                         <configuration>
-                            <merge>false</merge>
                             <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
                             <noJekyll>true</noJekyll><!-- Disable webpage processing -->
                             <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
@@ -88,6 +87,7 @@
                         </goals>
                         <phase>deploy</phase>
                         <configuration>
+                            <merge>false</merge>
                             <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
                             <noJekyll>true</noJekyll><!-- Disable webpage processing -->
                             <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
