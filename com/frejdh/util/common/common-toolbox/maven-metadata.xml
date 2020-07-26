@@ -3,10 +3,9 @@
   <groupId>com.frejdh.util.common</groupId>
   <artifactId>common-toolbox</artifactId>
   <versioning>
-    <release>1.0.0</release>
     <versions>
-      <version>1.0.0</version>
+      <version>1.0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20200725115335</lastUpdated>
+    <lastUpdated>20200726132856</lastUpdated>
   </versioning>
 </metadata>
