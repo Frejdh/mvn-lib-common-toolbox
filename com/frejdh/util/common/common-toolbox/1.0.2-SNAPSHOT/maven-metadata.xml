@@ -2,23 +2,23 @@
 <metadata modelVersion="1.1.0">
   <groupId>com.frejdh.util.common</groupId>
   <artifactId>common-toolbox</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20200726.133357</timestamp>
+      <timestamp>20200726.133431</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
-    <lastUpdated>20200726133357</lastUpdated>
+    <lastUpdated>20200726133431</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0.1-20200726.133357-1</value>
-        <updated>20200726133357</updated>
+        <value>1.0.2-20200726.133431-1</value>
+        <updated>20200726133431</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0.1-20200726.133357-1</value>
-        <updated>20200726133357</updated>
+        <value>1.0.2-20200726.133431-1</value>
+        <updated>20200726133431</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
