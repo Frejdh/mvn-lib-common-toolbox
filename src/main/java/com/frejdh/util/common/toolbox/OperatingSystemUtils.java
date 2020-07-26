@@ -92,4 +92,36 @@ public class OperatingSystemUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * Get the directory of a path
+	 * @param path Path to inspect
+	 * @return The directory or an empty string if not defined
+	 */
+	public static String getDirectory(String path) {
+		if (path.matches(".*[/\\\\].*")) {
+			int indexToSplitAt = path.lastIndexOf("/");
+			if (indexToSplitAt == -1) {
+				indexToSplitAt = path.lastIndexOf("\\");
+			}
+			return path.substring(0, indexToSplitAt);
+		}
+		return "";
+	}
+
+	/**
+	 * Get the directory of a path
+	 * @param path Path to inspect
+	 * @return The directory
+	 */
+	public static String getFilename(String path) {
+		if (path.matches(".*[/\\\\].*")) {
+			int indexToSplitAt = path.lastIndexOf("/");
+			if (indexToSplitAt == -1) {
+				indexToSplitAt = path.lastIndexOf("\\");
+			}
+			return path.substring(indexToSplitAt + 1);
+		}
+		return path;
+	}
+
 }
