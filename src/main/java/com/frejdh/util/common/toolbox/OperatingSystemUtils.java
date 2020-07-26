@@ -1,5 +1,8 @@
 package com.frejdh.util.common.toolbox;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Util class that detects the OS and helps abstracting their different standards.
  *
@@ -122,6 +125,27 @@ public class OperatingSystemUtils {
 			return path.substring(indexToSplitAt + 1);
 		}
 		return path;
+	}
+
+	/**
+	 * Fetch a file from the resource directory.
+	 * The given relativePath is auto-corrected to work on the current OS. In other words, forward slash can be used on Windows, etc.
+	 * @param relativePath The file path (relative from the resource directory)
+	 * @return The file or null
+	 */
+	public static File getFileFromResources(String relativePath) {
+		if (getPathSeparator().equals("/")) {
+			relativePath = relativePath.replace("\\", getPathSeparator());
+		}
+		else {
+			relativePath = relativePath.replace("/", getPathSeparator());
+		}
+
+		try {
+			return new File(OperatingSystemUtils.class.getClassLoader().getResource(relativePath).getFile());
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 
 }
