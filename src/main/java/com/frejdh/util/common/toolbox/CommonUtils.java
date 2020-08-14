@@ -289,7 +289,22 @@ public class CommonUtils {
 	}
 
 	/**
-	 * Get the name of the method calling this one
+	 * Get the name of the method that called the method that you're located in
+	 *
+	 * @param showParenthesis If true concat the parenthesis to the name
+	 * @return The method name
+	 */
+	public static String getCallingMethodName(boolean showParenthesis) {
+		try {
+			return new Throwable().getStackTrace()[2].getMethodName() + (showParenthesis ? "()" : "");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Undefined method name. How the hell did you do this?";
+		}
+	}
+
+	/**
+	 * Get the name of the method that you're currently located in
 	 *
 	 * @param showParenthesis If true concat the parenthesis to the name
 	 * @return The method name
@@ -399,6 +414,15 @@ public class CommonUtils {
 		return filename;
 	}
 
+	/**
+	 * String to list. Elements separated by comma
+	 * @param text Text to separate into lists
+	 * @param separatorCharacters Separator characters as one string
+	 * @return A list
+	 */
+	public static List<String> stringToList(String text, String separatorCharacters) {
+		return new ArrayList<>(Arrays.asList(text.split("\\s*[" + separatorCharacters + "]\\s*"))); // Mutable
+	}
 
 
 }

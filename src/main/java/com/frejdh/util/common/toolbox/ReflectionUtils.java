@@ -1,5 +1,6 @@
 package com.frejdh.util.common.toolbox;
 
+import org.springframework.beans.factory.annotation.Value;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,8 +16,52 @@ import java.lang.reflect.Modifier;
 public class ReflectionUtils {
 
 	/**
+	 * Invoke a method for a given instance.
+	 *
+	 * @param instance Instance to execute the method on
+	 * @param methodName Name of the method
+	 * @param params Parameters to inserted into the method
+	 * @return The return value from the invocation, or `null` if none.
+	 */
+	public static Object invokeMethod(Object instance, String methodName, Object... params) throws NoSuchMethodException, IllegalArgumentException {
+		int paramCount = params.length;
+		Method method;
+		Object requiredObj = null;
+		Class<?>[] classArray = new Class<?>[paramCount];
+		for (int i = 0; i < paramCount; i++) {
+			classArray[i] = params[i].getClass();
+		}
+
+		try {
+			method = instance.getClass().getDeclaredMethod(methodName, classArray);
+			method.setAccessible(true);
+			requiredObj = method.invoke(instance, params);
+		} catch (InvocationTargetException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		return requiredObj;
+	}
+
+	/**
 	 * Replace a non-primitive and static value found inside of a class.
-	 * This method also works on variables that are static and/or final.
+	 * This method also works on variables that are final.
+	 *
+	 * @param instanceWithVariable The class containing the variable to edit.
+	 * @param fieldName The name of the field to edit.
+	 * @param newValue The new value to set.
+	 * @throws NoSuchFieldException   No field found.
+	 * @throws IllegalAccessException Security related exception.
+	 */
+	public static void setVariable(Object instanceWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
+		Field field = setFieldToAccessible(instanceWithVariable.getClass(), fieldName);
+		field.set(instanceWithVariable, newValue);
+		field.setAccessible(false);
+	}
+
+	/**
+	 * Replace a non-primitive and static value found inside of a class.
+	 * This method also works on variables that are final.
 	 *
 	 * @param classWithVariable The class containing the variable to edit.
 	 * @param fieldName The name of the field to edit.
@@ -27,6 +72,7 @@ public class ReflectionUtils {
 	public static void setStaticVariable(Class<?> classWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		Field field = setFieldToAccessible(classWithVariable, fieldName);
 		field.set(null, newValue);
+		field.setAccessible(false);
 	}
 
 	/**
@@ -38,9 +84,11 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
-	public static <T> T getStaticVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
+	public static <T> T getVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		Field field = setFieldToAccessible(classWithVariable, fieldName);
-		return castTo.cast(field.get(null));
+		T retval = castTo.cast(field.get(null));
+		field.setAccessible(false);
+		return retval;
 	}
 
 	/**
@@ -51,14 +99,19 @@ public class ReflectionUtils {
 	 * @return The field that is now accessible.
 	 */
 	public static Field setFieldToAccessible(Class<?> classWithField, String fieldName) throws NoSuchFieldException, IllegalAccessException {
-		ReflectionUtils.IllegalAccessController.disableWarning(false);
-		Field field = classWithField.getDeclaredField(fieldName);
-		field.setAccessible(true);
-		Field modifiers = field.getClass().getDeclaredField("modifiers");
-		modifiers.setAccessible(true);
-		modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-		ReflectionUtils.IllegalAccessController.enableWarning(false);
-		return field;
+		try {
+			@Value
+			ReflectionUtils.IllegalAccessController.disableWarning(false);
+			Field field = classWithField.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			Field modifiers = field.getClass().getDeclaredField("modifiers");
+			modifiers.setAccessible(true);
+			modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			ReflectionUtils.IllegalAccessController.enableWarning(false);
+			return field;
+		} catch (NoSuchFieldException e) {
+			throw new NoSuchFieldException(classWithField.getCanonicalName() + "$" + fieldName);
+		}
 	}
 
 	public static Class<?> getInnerClassOrEnum(String outerClassPath, String... nameOfInnerClassOrEnum) {
@@ -144,7 +197,8 @@ public class ReflectionUtils {
 				unsafeObj = getObjectVolatile.invoke(unsafe, loggerClass, offset);
 				putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
 				isDisabled = true;
-			} catch (Exception ignored) { }
+			} catch (Exception ignored) {
+			}
 		}
 
 		public static void enableWarning(boolean force) {

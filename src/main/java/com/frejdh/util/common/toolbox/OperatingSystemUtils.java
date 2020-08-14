@@ -2,6 +2,8 @@ package com.frejdh.util.common.toolbox;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
 /**
  * Util class that detects the OS and helps abstracting their different standards.
@@ -142,8 +144,8 @@ public class OperatingSystemUtils {
 		}
 
 		try {
-			return new File(OperatingSystemUtils.class.getClassLoader().getResource(relativePath).getFile());
-		} catch (NullPointerException e) {
+			return Paths.get(OperatingSystemUtils.class.getClassLoader().getResource(relativePath).toURI()).toFile();
+		} catch (NullPointerException | URISyntaxException e) {
 			return null;
 		}
 	}
