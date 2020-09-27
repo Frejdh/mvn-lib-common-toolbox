@@ -1,6 +1,5 @@
 package com.frejdh.util.common.toolbox;
 
-import org.springframework.beans.factory.annotation.Value;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -100,7 +99,6 @@ public class ReflectionUtils {
 	 */
 	public static Field setFieldToAccessible(Class<?> classWithField, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		try {
-			@Value
 			ReflectionUtils.IllegalAccessController.disableWarning(false);
 			Field field = classWithField.getDeclaredField(fieldName);
 			field.setAccessible(true);

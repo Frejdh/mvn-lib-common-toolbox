@@ -320,13 +320,22 @@ public class CommonUtils {
 
 	/**
 	 * Get a stacktrace in the form of a string
-	 *
 	 * @param e The exception to derive the stacktrace string from
 	 * @return A stacktrace string
 	 */
-	public static String exceptionStacktraceToString(Exception e) {
+	public static String stacktraceToString(Exception e) {
 		StringWriter stacktrace = new StringWriter();
 		e.printStackTrace(new PrintWriter(stacktrace));
+		return stacktrace.toString();
+	}
+
+	/**
+	 * Get a stacktrace in the form of a string
+	 * @return A stacktrace string
+	 */
+	public static String stacktraceToString() {
+		StringWriter stacktrace = new StringWriter();
+		new Exception().printStackTrace(new PrintWriter(stacktrace));
 		return stacktrace.toString();
 	}
 

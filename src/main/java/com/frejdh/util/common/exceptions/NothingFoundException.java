@@ -6,16 +6,16 @@ package com.frejdh.util.common.exceptions;
  *
  * @author Kevin Frejdh
  */
-public class NothingAvailableException extends RuntimeException {
-	public NothingAvailableException(String msg, Throwable e) {
+public class NothingFoundException extends RuntimeException {
+	public NothingFoundException(String msg, Throwable e) {
 		super(msg, e);
 	}
 
-	public NothingAvailableException(String msg) {
+	public NothingFoundException(String msg) {
 		super(msg);
 	}
 
-	public NothingAvailableException() {
+	public NothingFoundException() {
 		super();
 	}
 }
