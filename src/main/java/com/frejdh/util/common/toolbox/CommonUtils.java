@@ -323,7 +323,7 @@ public class CommonUtils {
 	 * @param e The exception to derive the stacktrace string from
 	 * @return A stacktrace string
 	 */
-	public static String stacktraceToString(Exception e) {
+	public static String stacktraceToString(Throwable e) {
 		StringWriter stacktrace = new StringWriter();
 		e.printStackTrace(new PrintWriter(stacktrace));
 		return stacktrace.toString();
