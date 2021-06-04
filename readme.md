@@ -17,7 +17,7 @@ All available classes can be found [here](https://github.com/Frejdh/mvn-lib-comm
 <repositories> <!-- Required in order to resolve this package -->
     <repository>
         <id>mvn-lib-common-toolbox</id>
-        <url>https://raw.github.com/Frejdh/mvn-lib-common-toolbox/mvn-repo/</url>
+        <url>https://raw.github.com/Frejdh/mvn-lib-common-toolbox/releases/</url>
     </repository>
 </repositories>
 ```
