@@ -1,7 +1,8 @@
 package com.frejdh.util.common;
 
+import com.frejdh.util.common.exceptions.AlreadySetException;
 import com.frejdh.util.common.toolbox.OperatingSystemUtils;
-import junit.framework.Assert;
+import com.frejdh.util.common.toolbox.ReflectionUtils;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

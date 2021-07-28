@@ -1,6 +1,11 @@
 Changelog
 -
 
+# 1.0.3
+* Added `ThrowableUtils` class
+* Added `SneakyThrow` method
+* Added more reflection methods
+
 # 1.0.2
 * Stacktrace method now accepts `Throwable` objects instead of just `Exception`.
 

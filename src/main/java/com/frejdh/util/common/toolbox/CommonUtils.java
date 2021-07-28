@@ -433,5 +433,14 @@ public class CommonUtils {
 		return new ArrayList<>(Arrays.asList(text.split("\\s*[" + separatorCharacters + "]\\s*"))); // Mutable
 	}
 
+	/**
+	 * Sneaky throws an exception. Doesn't need a try/catch when using this method.
+	 * @param e The exception to throw
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
+		throw (E) e;
+	}
+
 
 }

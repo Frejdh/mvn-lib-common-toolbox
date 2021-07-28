@@ -1,5 +1,7 @@
 package com.frejdh.util.common.toolbox;
 
+import com.frejdh.util.common.functional.ThrowingFunction;
+import com.frejdh.util.common.functional.ThrowingConsumer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -69,14 +71,18 @@ public class ReflectionUtils {
 	 * @throws IllegalAccessException Security related exception.
 	 */
 	public static void setStaticVariable(Class<?> classWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
-		Field field = setFieldToAccessible(classWithVariable, fieldName);
-		field.set(null, newValue);
-		field.setAccessible(false);
+		doOperationWithFieldAccessEnabled(
+				classWithVariable,
+				fieldName,
+				(field) -> {
+					field.set(null, newValue);
+				}
+		);
 	}
 
 	/**
 	 * Get a non-primitive and static value found inside of a class.
-	 * This method also works on variables that are static and/or final.
+	 * This method also works on variables that are final.
 	 *
 	 * @param classWithVariable The class containing the variable to fetch.
 	 * @param fieldName The name of the field to get.
@@ -84,9 +90,47 @@ public class ReflectionUtils {
 	 * @throws IllegalAccessException Security related exception.
 	 */
 	public static <T> T getVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
-		Field field = setFieldToAccessible(classWithVariable, fieldName);
-		T retval = castTo.cast(field.get(null));
-		field.setAccessible(false);
+		return doOperationWithFieldAccessEnabled(
+				classWithVariable,
+				fieldName,
+				(Field field) -> castTo.cast(field.get(null))
+		);
+	}
+
+	/**
+	 * Get a non-primitive and non-static value found inside of a class.
+	 * This method also works on variables that are final.
+	 *
+	 * @param instanceWithVariable The instance containing the variable to fetch.
+	 * @param fieldName The name of the field to get.
+	 * @throws NoSuchFieldException   No field found.
+	 * @throws IllegalAccessException Security related exception.
+	 */
+	public static <I, T> T getVariable(I instanceWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
+		return doOperationWithFieldAccessEnabled(
+				instanceWithVariable.getClass(),
+				fieldName,
+				(Field field) -> ThrowableUtils.safeNullPointerOperation(() -> castTo.cast(field.get(instanceWithVariable)))
+		);
+	}
+
+	private static void doOperationWithFieldAccessEnabled(Class<?> classWithField, String fieldName, ThrowingConsumer<Field> operation) throws NoSuchFieldException, IllegalAccessException {
+		doOperationWithFieldAccessEnabled(classWithField, fieldName, (ThrowingFunction<Field, Void>) (field) -> {
+			operation.accept(field);
+			return null;
+		});
+	}
+
+	private static <R> R doOperationWithFieldAccessEnabled(Class<?> classWithField, String fieldName, ThrowingFunction<Field, R> operation) throws NoSuchFieldException, IllegalAccessException {
+		Field declaredField = classWithField.getDeclaredField(fieldName);
+		boolean fieldWasAccessible = declaredField.isAccessible();
+		Field modifiedField = setFieldToAccessible(classWithField, fieldName);
+		R retval = operation.apply(modifiedField);
+
+		if (!fieldWasAccessible) {
+			declaredField.setAccessible(false);
+		}
+
 		return retval;
 	}
 
@@ -121,7 +165,7 @@ public class ReflectionUtils {
 		try {
 			return Class.forName(path.toString());
 		} catch (ClassNotFoundException e) {
-			System.out.println("The class '" + path.toString() + "' couldn't be found.");
+			System.out.println("The class '" + path + "' couldn't be found.");
 			return null;
 		}
 	}
@@ -143,6 +187,7 @@ public class ReflectionUtils {
 	public static void enableIllegalAccessWarning() {
 		IllegalAccessController.enableWarning(true);
 	}
+
 
 	/**
 	 * Class for handling illegal access warnings.
@@ -220,4 +265,6 @@ public class ReflectionUtils {
 			}
 		}
 	}
+
+
 }
