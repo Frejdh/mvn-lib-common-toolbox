@@ -110,7 +110,7 @@ public class ReflectionUtils {
 		return doOperationWithFieldAccessEnabled(
 				instanceWithVariable.getClass(),
 				fieldName,
-				(Field field) -> ThrowableUtils.safeNullPointerOperation(() -> castTo.cast(field.get(instanceWithVariable)))
+				(Field field) -> NullSafe.safe(() -> castTo.cast(field.get(instanceWithVariable)))
 		);
 	}
 

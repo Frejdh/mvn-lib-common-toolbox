@@ -1,6 +1,11 @@
 Changelog
 -
 
+# 1.0.4
+# Added class `NullSafe`
+* Moved `ThrowableUtils.safeNullPointerOperation(operation)` method to `NullSafe.safe(operation)`
+* Added `NullSafe.elvis(operation, defaultValue)` method.
+
 # 1.0.3
 * Added `ThrowableUtils` class
 * Added `SneakyThrow` method

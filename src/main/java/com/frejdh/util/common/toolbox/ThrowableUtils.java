@@ -76,23 +76,6 @@ public class ThrowableUtils<T> {
 
 
 	/*
-	 * Predefined operations/methods
-	 */
-
-	/**
-	 * Do an action in which a NullPointerException can be made.
-	 * @param operation Operation/action to perform.
-	 * @return The original operational return value, or null if a NullPointerException was encountered
-	 */
-	public static <T> T safeNullPointerOperation(ThrowingSupplier<T> operation) {
-		return ThrowableUtils.when(operation)
-				.throwsException(NullPointerException.class)
-				.thenReturn(null)
-				.execute();
-	}
-
-
-	/*
 	 * Additional classes
 	 */
 
