@@ -29,7 +29,7 @@ public class ThrowableUtils<T> {
 		return condition;
 	}
 
-	public final ThrowableCondition<T> throwsException(List<Class<? extends Throwable>> throwableClasses) {
+	public ThrowableCondition<T> throwsException(List<Class<? extends Throwable>> throwableClasses) {
 		if (throwableClasses == null) {
 			return null;
 		}
@@ -79,7 +79,7 @@ public class ThrowableUtils<T> {
 	 * Additional classes
 	 */
 
-	protected static class ThrowableCondition<T> {
+	public static class ThrowableCondition<T> {
 		protected ThrowableUtils<T> parent;
 		protected List<Class<? extends Throwable>> throwableClasses;
 		protected boolean hasReturnValue;
