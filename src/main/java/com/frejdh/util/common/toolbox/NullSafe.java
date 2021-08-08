@@ -11,7 +11,10 @@ public class NullSafe {
 	 * @return The original operational return value, or null if a NullPointerException was encountered in Java.
 	 */
 	public static <T> T safe(ThrowingSupplier<T> operation) {
-		return elvis(operation, null);
+		return ThrowableUtils.when(operation)
+				.throwsException(NullPointerException.class)
+				.thenReturn(null)
+				.execute();
 	}
 
 	/**
@@ -22,10 +25,11 @@ public class NullSafe {
 	 * @return The original operational return value, or null if a NullPointerException was encountered in Java.
 	 */
 	public static <T> T elvis(ThrowingSupplier<T> operation, T defaultValue) {
-		return ThrowableUtils.when(operation)
+		T retval = ThrowableUtils.when(operation)
 				.throwsException(NullPointerException.class)
 				.thenReturn(defaultValue)
 				.execute();
+		return retval != null ? retval : defaultValue;
 	}
 
 }
