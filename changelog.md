@@ -1,8 +1,11 @@
 Changelog
 -
 
+# 1.0.5
+* Added class `ThrowingRunnable`.
+
 # 1.0.4
-# Added class `NullSafe`
+* Added class `NullSafe`
 * Moved `ThrowableUtils.safeNullPointerOperation(operation)` method to `NullSafe.safe(operation)`
 * Added `NullSafe.elvis(operation, defaultValue)` method.
 
