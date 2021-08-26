@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Aug 26 23:13:16 CEST 2021
+common-toolbox-1.0.5.jar>=
+common-toolbox-1.0.5-sources.jar>=
+common-toolbox-1.0.5.pom>=
+common-toolbox-1.0.5-javadoc.jar>=
