@@ -1,7 +1,7 @@
 package com.frejdh.util.common.functional;
 
 @FunctionalInterface
-public interface ThrowingRunnable<T> extends Runnable {
+public interface ThrowingRunnable extends Runnable {
 
 	@Override
 	default void run() {
