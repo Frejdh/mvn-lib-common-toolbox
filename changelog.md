@@ -1,6 +1,11 @@
 Changelog
 -
 
+# 1.0.6
+* Upgraded parent and dependency versions
+  * Also removed spring-boot as a dependency.
+* Added an additional `NullSafe` method.
+
 # 1.0.5
 * Added class `ThrowingRunnable`.
 

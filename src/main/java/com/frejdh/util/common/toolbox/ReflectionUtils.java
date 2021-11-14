@@ -46,7 +46,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Replace a non-primitive and static value found inside of a class.
-	 * This method also works on variables that are final.
+	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param instanceWithVariable The class containing the variable to edit.
 	 * @param fieldName The name of the field to edit.
@@ -62,7 +62,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Replace a non-primitive and static value found inside of a class.
-	 * This method also works on variables that are final.
+	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param classWithVariable The class containing the variable to edit.
 	 * @param fieldName The name of the field to edit.
@@ -82,7 +82,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Get a non-primitive and static value found inside of a class.
-	 * This method also works on variables that are final.
+	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param classWithVariable The class containing the variable to fetch.
 	 * @param fieldName The name of the field to get.
@@ -99,7 +99,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Get a non-primitive and non-static value found inside of a class.
-	 * This method also works on variables that are final.
+	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param instanceWithVariable The instance containing the variable to fetch.
 	 * @param fieldName The name of the field to get.

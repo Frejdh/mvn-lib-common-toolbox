@@ -32,4 +32,18 @@ public class NullSafe {
 		return retval != null ? retval : defaultValue;
 	}
 
+	/**
+	 * The same as {@link #elvis(ThrowingSupplier, Object)} except with a supplier defining the fallback value.
+	 * @param operation The operation/action to with null-safety.
+	 * @param defaultValue The second/fallback operation to return in case the first operation was null.
+	 * @return The original operational return value, or the fallback operation value, or null.
+	 */
+	public static <T> T elvis(ThrowingSupplier<T> operation, ThrowingSupplier<T> defaultValue) {
+		T retval = ThrowableUtils.when(operation)
+				.throwsException(NullPointerException.class)
+				.thenReturn(safe(defaultValue))
+				.execute();
+		return retval != null ? retval : (defaultValue != null ? defaultValue.get() : null);
+	}
+
 }
