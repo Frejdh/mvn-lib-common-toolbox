@@ -100,7 +100,7 @@
     <repositories>
         <repository>
             <id>library-master-pom</id>
-            <url>https://raw.github.com/Frejdh/mvn-lib-master/mvn-repo/</url>
+            <url>https://raw.github.com/Frejdh/mvn-lib-master/releases/</url>
         </repository>
     </repositories>
 
