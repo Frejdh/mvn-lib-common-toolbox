@@ -2,6 +2,7 @@ package com.frejdh.util.common.toolbox;
 
 import com.frejdh.util.common.functional.ThrowingFunction;
 import com.frejdh.util.common.functional.ThrowingConsumer;
+import org.apiguardian.api.API;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -54,6 +55,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
+	@API(status = API.Status.DEPRECATED)
 	public static void setVariable(Object instanceWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		Field field = setFieldToAccessible(instanceWithVariable.getClass(), fieldName);
 		field.set(instanceWithVariable, newValue);
@@ -70,6 +72,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
+	@API(status = API.Status.DEPRECATED)
 	public static void setStaticVariable(Class<?> classWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -89,6 +92,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
+	@API(status = API.Status.DEPRECATED)
 	public static <T> T getVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -106,6 +110,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
+	@Deprecated
 	public static <I, T> T getVariable(I instanceWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				instanceWithVariable.getClass(),
@@ -141,6 +146,7 @@ public class ReflectionUtils {
 	 * @param fieldName Name of the field.
 	 * @return The field that is now accessible.
 	 */
+	@Deprecated
 	public static Field setFieldToAccessible(Class<?> classWithField, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		try {
 			ReflectionUtils.IllegalAccessController.disableWarning(false);
