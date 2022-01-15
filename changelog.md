@@ -1,6 +1,12 @@
 Changelog
 -
 
+# 1.0.8
+* Added `firstNonNull` methods in `NullSafe` helper class for nested elvis-like cases.
+
+# 1.0.7
+* Added support for JDK versions above JDK 8 (tested with JDK 17).
+
 # 1.0.6
 * Upgraded parent and dependency versions
   * Also removed spring-boot as a dependency.
