@@ -1,10 +1,11 @@
 package com.frejdh.util.common;
 
 import com.frejdh.util.common.toolbox.ReflectionUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReflectionUtilsTests {
 

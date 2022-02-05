@@ -1,6 +1,10 @@
 Changelog
 -
 
+# 1.1.0
+* Dependency versions now defined in parent instead for better sync between projects.
+* Parameterized some tests
+
 # 1.0.8
 * Added `firstNonNull` methods in `NullSafe` helper class for nested elvis-like cases.
 

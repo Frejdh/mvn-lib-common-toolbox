@@ -1,31 +1,43 @@
 package com.frejdh.util.common;
 
-import com.frejdh.util.common.exceptions.AlreadySetException;
 import com.frejdh.util.common.toolbox.OperatingSystemUtils;
-import com.frejdh.util.common.toolbox.ReflectionUtils;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.ParameterizedTest.*;
 
 /**
  * Function tests
  */
 public class OperatingSystemUtilsTests {
 
-	@Test
-	public void directoryPathTest() {
-		int index = 1;
-		assertEquals("Test " + index++, "C:\\My super awesome path", OperatingSystemUtils.getDirectory("C:\\My super awesome path\\filename.txt"));
-		assertEquals("Test " + index++, "", OperatingSystemUtils.getDirectory("filename.txt"));
-		assertEquals("Test " + index++, "/home/user", OperatingSystemUtils.getDirectory("/home/user/file"));
-		assertEquals("Test " + index, "/home/user/directory1", OperatingSystemUtils.getDirectory("/home/user/directory1/"));
+	private static final String PARAMETERIZED_TEST_NAME = DISPLAY_NAME_PLACEHOLDER + "[" + INDEX_PLACEHOLDER + "] -> [" + ARGUMENTS_WITH_NAMES_PLACEHOLDER + "]";
+
+	@ParameterizedTest(name = PARAMETERIZED_TEST_NAME)
+	@CsvSource({
+			"C:\\My super awesome path, C:\\My super awesome path\\filename.txt",
+			"'', filename.txt",
+			"/home/user, /home/user/file",
+			"/home/user/directory1, /home/user/directory1/"
+	})
+	public void directoryPathTest(String expectedDirectory, String suppliedDirectoryOrFilename) {
+		assertEquals(expectedDirectory, OperatingSystemUtils.getDirectory(suppliedDirectoryOrFilename),
+				String.format("Expected '%s' to be '%s'", expectedDirectory, suppliedDirectoryOrFilename)
+		);
 	}
 
-	@Test
-	public void filenamePathTest() {
-		int index = 1;
-		assertEquals("Test " + index++, "filename.txt", OperatingSystemUtils.getFilename("C:\\My super awesome path\\filename.txt"));
-		assertEquals("Test " + index++, "filename.txt", OperatingSystemUtils.getFilename("filename.txt"));
-		assertEquals("Test " + index++, "file", OperatingSystemUtils.getFilename("/home/user/file"));
-		assertEquals("Test " + index, "", OperatingSystemUtils.getFilename("/home/user/directory1/"));
+	@ParameterizedTest(name = PARAMETERIZED_TEST_NAME)
+	@CsvSource({
+			"filename.txt, C:\\My super awesome path\\filename.txt",
+			"filename.txt, filename.txt",
+			"file, /home/user/file",
+			"'', /home/user/directory1/"
+	})
+	public void filenamePathTest(String expectedFilename, String suppliedDirectoryOrFilename) {
+		assertEquals(expectedFilename, OperatingSystemUtils.getFilename(suppliedDirectoryOrFilename),
+				String.format("Expected '%s' to be '%s'", expectedFilename, suppliedDirectoryOrFilename)
+		);
 	}
+
 }

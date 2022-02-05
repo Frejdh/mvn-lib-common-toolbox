@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.frejdh.util</groupId>
-        <artifactId>library-master-pom</artifactId>
-        <version>1.1.0</version>
+        <groupId>com.frejdh</groupId>
+        <artifactId>master-pom</artifactId>
+        <version>2.1.0</version>
     </parent>
 
     <groupId>com.frejdh.util.common</groupId>
     <artifactId>common-toolbox</artifactId>
-    <version>1.0.8</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -22,32 +22,31 @@
         <!-- Deployment for artifacts -->
         <github.repository.owner>Frejdh</github.repository.owner>
         <github.repository.name>mvn-lib-common-toolbox</github.repository.name>
+
+        <apiguardian.version>1.1.2</apiguardian.version>
     </properties>
 
     <dependencies>
         <dependency> <!-- Google GSON (handles json) -->
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apiguardian</groupId>
             <artifactId>apiguardian-api</artifactId>
-            <version>1.1.2</version>
+            <version>${apiguardian.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -58,14 +57,14 @@
             <plugin> <!-- Tests -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${plugin.maven-surefire.version}</version>
             </plugin>
 
             <plugin> <!-- Optional. Push artifact and files to github upon mvn deploy -->
                 <inherited>false</inherited>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.11</version>
+                <version>${github.site-maven-plugin.version}</version>
 
                 <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
                     <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
