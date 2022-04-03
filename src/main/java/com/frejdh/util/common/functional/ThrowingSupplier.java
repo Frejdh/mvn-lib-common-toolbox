@@ -1,6 +1,5 @@
 package com.frejdh.util.common.functional;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @FunctionalInterface

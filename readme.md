@@ -10,7 +10,7 @@ All available classes can be found [here](https://github.com/Frejdh/mvn-lib-comm
     <dependency>
         <groupId>com.frejdh.util.common</groupId>
         <artifactId>common-toolbox</artifactId>
-        <version>1.0.8</version>
+        <version>1.2.0</version>
     </dependency>
 </dependencies>
 

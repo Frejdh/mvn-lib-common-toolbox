@@ -1,6 +1,12 @@
 Changelog
 -
 
+# 1.2.0
+* Fixed `firstNonNull` method in `NullSafe`. Previously a null value could still be returned in some scenarios.
+* Optimized performance of `ThrowableUtils` (and `NullSafe`) classes. Removed unnecessary method invocations.
+* Added `equalsToAny` method in `ThrowableUtils` class.
+* Added some more unit tests for `NullSafe`
+
 # 1.1.0
 * Dependency versions now defined in parent instead for better sync between projects.
 * Parameterized some tests

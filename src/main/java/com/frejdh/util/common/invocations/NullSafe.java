@@ -1,6 +1,7 @@
-package com.frejdh.util.common.toolbox;
+package com.frejdh.util.common.invocations;
 
 import com.frejdh.util.common.functional.ThrowingSupplier;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class NullSafe {
 	public static <T> T safe(ThrowingSupplier<T> operation) {
 		return ThrowableUtils.when(operation)
 				.throwsException(NullPointerException.class)
-				.thenReturn(null)
+				.thenReturn((T) null)
 				.execute();
 	}
 
@@ -61,9 +62,13 @@ public class NullSafe {
 		}
 
 		return ThrowableUtils.when(operation)
-				.throwsException(NullPointerException.class)
-				.thenReturn(firstNonNull(fallbackOperations.isEmpty() ? null : fallbackOperations.remove(0), fallbackOperations))
+				.throwsException(NullPointerException.class).thenReturn(() -> firstNonNull(removeFirstAndGet(fallbackOperations), fallbackOperations))
+				.equalsToNull().thenReturn(() -> firstNonNull(removeFirstAndGet(fallbackOperations), fallbackOperations))
 				.execute();
+	}
+
+	private static <T> ThrowingSupplier<T> removeFirstAndGet(List<ThrowingSupplier<T>> listToRemoveFirstEntryFrom) {
+		return !listToRemoveFirstEntryFrom.isEmpty() ? listToRemoveFirstEntryFrom.remove(0) : null;
 	}
 
 }

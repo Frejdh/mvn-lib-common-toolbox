@@ -2,6 +2,7 @@ package com.frejdh.util.common.toolbox;
 
 import com.frejdh.util.common.functional.ThrowingFunction;
 import com.frejdh.util.common.functional.ThrowingConsumer;
+import com.frejdh.util.common.invocations.NullSafe;
 import org.apiguardian.api.API;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +56,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
-	@API(status = API.Status.DEPRECATED)
+	@API(status = API.Status.DEPRECATED, since = "12")
 	public static void setVariable(Object instanceWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		Field field = setFieldToAccessible(instanceWithVariable.getClass(), fieldName);
 		field.set(instanceWithVariable, newValue);
@@ -92,7 +93,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
-	@API(status = API.Status.DEPRECATED)
+	@API(status = API.Status.DEPRECATED, since = "12")
 	public static <T> T getVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -111,6 +112,7 @@ public class ReflectionUtils {
 	 * @throws IllegalAccessException Security related exception.
 	 */
 	@Deprecated
+	@API(status = API.Status.DEPRECATED, since = "12")
 	public static <I, T> T getVariable(I instanceWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				instanceWithVariable.getClass(),
