@@ -1,3 +1,5 @@
+[![Current Build](https://github.com/Frejdh/mvn-lib-common-toolbox/actions/workflows/current-build.yml/badge.svg?branch=master)](https://github.com/Frejdh/mvn-lib-common-toolbox/actions/workflows/current-build.yml)
+
 Toolbox for mixed purposes
 -
 This module is meant as a utility for general coding, OS compatibility and serializing with some helpful
