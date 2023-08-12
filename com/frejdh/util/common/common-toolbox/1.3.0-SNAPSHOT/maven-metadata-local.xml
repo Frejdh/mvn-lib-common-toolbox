@@ -3,7 +3,7 @@
   <groupId>com.frejdh.util.common</groupId>
   <artifactId>common-toolbox</artifactId>
   <versioning>
-    <lastUpdated>20230812111033</lastUpdated>
+    <lastUpdated>20230812122445</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
@@ -12,23 +12,23 @@
         <classifier>javadoc</classifier>
         <extension>jar</extension>
         <value>1.3.0-SNAPSHOT</value>
-        <updated>20230812111033</updated>
+        <updated>20230812122445</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
         <value>1.3.0-SNAPSHOT</value>
-        <updated>20230812111033</updated>
+        <updated>20230812122445</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
         <value>1.3.0-SNAPSHOT</value>
-        <updated>20230812111033</updated>
+        <updated>20230812122445</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
         <value>1.3.0-SNAPSHOT</value>
-        <updated>20230812111033</updated>
+        <updated>20230812122445</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
