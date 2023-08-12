@@ -1,4 +1,4 @@
-package com.frejdh.util.common;
+package com.frejdh.util.common.toolbox;
 
 import com.frejdh.util.common.toolbox.OperatingSystemUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.params.ParameterizedTest.*;
 /**
  * Function tests
  */
-public class OperatingSystemUtilsTests {
+public class OperatingSystemUtilsTest {
 
 	private static final String PARAMETERIZED_TEST_NAME = DISPLAY_NAME_PLACEHOLDER + "[" + INDEX_PLACEHOLDER + "] -> [" + ARGUMENTS_WITH_NAMES_PLACEHOLDER + "]";
 
@@ -21,7 +21,7 @@ public class OperatingSystemUtilsTests {
 			"/home/user, /home/user/file",
 			"/home/user/directory1, /home/user/directory1/"
 	})
-	public void directoryPathTest(String expectedDirectory, String suppliedDirectoryOrFilename) {
+	void directoryPathTest(String expectedDirectory, String suppliedDirectoryOrFilename) {
 		assertEquals(expectedDirectory, OperatingSystemUtils.getDirectory(suppliedDirectoryOrFilename),
 				String.format("Expected '%s' to be '%s'", expectedDirectory, suppliedDirectoryOrFilename)
 		);
@@ -34,7 +34,7 @@ public class OperatingSystemUtilsTests {
 			"file, /home/user/file",
 			"'', /home/user/directory1/"
 	})
-	public void filenamePathTest(String expectedFilename, String suppliedDirectoryOrFilename) {
+	void filenamePathTest(String expectedFilename, String suppliedDirectoryOrFilename) {
 		assertEquals(expectedFilename, OperatingSystemUtils.getFilename(suppliedDirectoryOrFilename),
 				String.format("Expected '%s' to be '%s'", expectedFilename, suppliedDirectoryOrFilename)
 		);

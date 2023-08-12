@@ -297,9 +297,8 @@ public class CommonUtils {
 	public static String getCallingMethodName(boolean showParenthesis) {
 		try {
 			return new Throwable().getStackTrace()[2].getMethodName() + (showParenthesis ? "()" : "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Undefined method name. How the hell did you do this?";
+		} catch (Throwable e) {
+			throw new RuntimeException("Undefined method name. How is this possible?", e);
 		}
 	}
 
@@ -312,9 +311,8 @@ public class CommonUtils {
 	public static String getMethodName(boolean showParenthesis) {
 		try {
 			return new Throwable().getStackTrace()[1].getMethodName() + (showParenthesis ? "()" : "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Undefined method name. How the hell did you do this?";
+		} catch (Throwable e) {
+			throw new RuntimeException("Undefined method name. How is this possible?", e);
 		}
 	}
 
@@ -353,8 +351,9 @@ public class CommonUtils {
 		}
 
 		final int oldLength = array.length;
-		T[] newArray = (T[]) new Object[oldLength + 1];
-		System.arraycopy(array, 0, newArray, 1, oldLength + 1);
+		final int newLength = oldLength + 1;
+		T[] newArray = (T[]) new Object[newLength];
+		System.arraycopy(array, 0, newArray, 1, newLength);
 		newArray[0] = element;
 		return newArray;
 	}
@@ -373,7 +372,8 @@ public class CommonUtils {
 		}
 
 		final int oldLength = array.length;
-		array = Arrays.copyOf(array, oldLength + 1);
+		final int newLength = oldLength + 1;
+		array = Arrays.copyOf(array, newLength);
 		array[oldLength] = element;
 		return array;
 	}
@@ -394,33 +394,15 @@ public class CommonUtils {
 
 		StringBuilder sb = new StringBuilder("[").append(array[0]);
 		boolean isFirst = true;
-		for (int i = 0; i < array.length; i++) {
-			if (i == 0)
-				continue;
+		for (int i = 1; i < array.length; i++) {
 			sb.append(array[i]);
-			if (i + 1 != array.length)
+
+			// Check if another element exists
+			if (i + 1 != array.length) {
 				sb.append(", ");
+			}
 		}
 		return sb.append("]").toString();
-	}
-
-	/**
-	 * Compliant with Windows, UNIX and filesystem naming schemes.
-	 * Replaces characters that are unsupported to a fully functional unicode variant.
-	 *
-	 * @param filename Filename to replace characters inside of. <u>Cannot be a full path!</u>
-	 * @return A new string with the illegal characters replaced
-	 */
-	public static String replaceIllegalFilenameCharacters(String filename) {
-		filename = filename.replace(":", "꞉"); // Modifier Letter Colon, U+A789
-		filename = filename.replace("/", " ∕ "); // With spacing (hard to read otherwise)
-		filename = filename.replace("\\", "＼");
-		filename = filename.replace("*", "⁎");
-		filename = filename.replace("<", "‹").replace(">", "›");
-		filename = filename.replace("|", "⏐");
-		filename = filename.replace("?", "？"); // Adds some spacing, not pretty but it works
-		filename = filename.replace("\"", "”");
-		return filename;
 	}
 
 	/**
@@ -434,7 +416,7 @@ public class CommonUtils {
 	}
 
 	/**
-	 * Sneaky throws an exception. Doesn't need a try/catch when using this method.
+	 * Sneaky throws an exception. Doesn't require the calling code to have a try/catch when using this method.
 	 * @param e The exception to throw
 	 */
 	@SuppressWarnings("unchecked")

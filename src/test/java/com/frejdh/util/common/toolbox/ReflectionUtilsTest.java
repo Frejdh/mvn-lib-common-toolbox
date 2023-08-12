@@ -1,4 +1,4 @@
-package com.frejdh.util.common;
+package com.frejdh.util.common.toolbox;
 
 import com.frejdh.util.common.toolbox.ReflectionUtils;
 import org.junit.jupiter.api.Test;
@@ -7,11 +7,11 @@ import org.junit.jupiter.api.condition.JRE;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ReflectionUtilsTests {
+public class ReflectionUtilsTest {
 
 	@Test
 	@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
-	public void canGetInstanceVariable() throws Exception {
+	void canGetInstanceVariable() throws Exception {
 		ReflectionTestClass exception = new ReflectionTestClass();
 		String msg = ReflectionUtils.getVariable(exception, "finalVariable", String.class);
 		assertEquals("final", msg);
@@ -19,7 +19,7 @@ public class ReflectionUtilsTests {
 
 	@Test
 	@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
-	public void canGetStaticVariable() throws Exception {
+	void canGetStaticVariable() throws Exception {
 		ReflectionTestClass exception = new ReflectionTestClass();
 		String msg = ReflectionUtils.getVariable(ReflectionTestClass.class, "staticFinalVariable", String.class);
 		assertEquals("staticFinal", msg);

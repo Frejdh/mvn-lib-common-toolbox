@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 /**
- * Util class that detects the OS and helps abstracting their different standards.
+ * Util class that detects the OS, and helps abstract the different standards.
  *
  * @author Kevin Frejdh
  */
@@ -131,7 +131,7 @@ public class OperatingSystemUtils {
 
 	/**
 	 * Fetch a file from the resource directory.
-	 * The given relativePath is auto-corrected to work on the current OS. In other words, forward slash can be used on Windows, etc.
+	 * The given relativePath is autocorrected to work on the current OS. In other words, forward slash can be used on Windows, etc.
 	 * @param relativePath The file path (relative from the resource directory)
 	 * @return The file or null
 	 */
@@ -148,6 +148,29 @@ public class OperatingSystemUtils {
 		} catch (NullPointerException | URISyntaxException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Compliant with Windows, UNIX and filesystem naming schemes.
+	 * Replaces characters that are unsupported to a fully functional unicode variant.
+	 *
+	 * @param filename Filename to replace characters of. <u>Note, this cannot be a full path!</u>
+	 * @return A new string with the illegal characters replaced
+	 */
+	public static String replaceIllegalFilenameCharacters(String filename) {
+		if (filename == null) {
+			return null;
+		}
+
+		filename = filename.replace(":", "꞉"); // Modifier Letter Colon, U+A789
+		filename = filename.replace("/", " ∕ "); // With spacing (hard to read otherwise)
+		filename = filename.replace("\\", "＼");
+		filename = filename.replace("*", "⁎");
+		filename = filename.replace("<", "‹").replace(">", "›");
+		filename = filename.replace("|", "⏐");
+		filename = filename.replace("?", "？"); // Adds some spacing, not pretty but it works
+		filename = filename.replace("\"", "”");
+		return filename;
 	}
 
 }

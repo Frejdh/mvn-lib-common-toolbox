@@ -1,9 +1,10 @@
 package com.frejdh.util.common.toolbox;
 
-import com.frejdh.util.common.functional.ThrowingFunction;
 import com.frejdh.util.common.functional.ThrowingConsumer;
-import com.frejdh.util.common.invocations.NullSafe;
+import com.frejdh.util.common.functional.ThrowingFunction;
+import com.frejdh.util.common.invocations.Operators;
 import org.apiguardian.api.API;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +27,7 @@ public class ReflectionUtils {
 	 * @param params Parameters to inserted into the method
 	 * @return The return value from the invocation, or `null` if none.
 	 */
-	public static Object invokeMethod(Object instance, String methodName, Object... params) throws NoSuchMethodException, IllegalArgumentException {
+	public static Object invokeMethod(Object instance, String methodName, Object... params) throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException {
 		int paramCount = params.length;
 		Method method;
 		Object requiredObj = null;
@@ -39,15 +40,15 @@ public class ReflectionUtils {
 			method = instance.getClass().getDeclaredMethod(methodName, classArray);
 			method.setAccessible(true);
 			requiredObj = method.invoke(instance, params);
-		} catch (InvocationTargetException | IllegalAccessException e) {
-			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
 		}
 
 		return requiredObj;
 	}
 
 	/**
-	 * Replace a non-primitive and static value found inside of a class.
+	 * Replace a non-primitive and static value found inside a class.
 	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param instanceWithVariable The class containing the variable to edit.
@@ -64,7 +65,7 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Replace a non-primitive and static value found inside of a class.
+	 * Replace a non-primitive and static value found inside a class.
 	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param classWithVariable The class containing the variable to edit.
@@ -73,7 +74,7 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
-	@API(status = API.Status.DEPRECATED)
+	@API(status = API.Status.DEPRECATED, since = "12")
 	public static void setStaticVariable(Class<?> classWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -103,7 +104,7 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Get a non-primitive and non-static value found inside of a class.
+	 * Get a non-primitive and non-static value found inside a class.
 	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param instanceWithVariable The instance containing the variable to fetch.
@@ -111,13 +112,12 @@ public class ReflectionUtils {
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
 	 */
-	@Deprecated
 	@API(status = API.Status.DEPRECATED, since = "12")
 	public static <I, T> T getVariable(I instanceWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				instanceWithVariable.getClass(),
 				fieldName,
-				(Field field) -> NullSafe.safe(() -> castTo.cast(field.get(instanceWithVariable)))
+				(Field field) -> Operators.safeCall(() -> castTo.cast(field.get(instanceWithVariable)))
 		);
 	}
 
@@ -148,7 +148,7 @@ public class ReflectionUtils {
 	 * @param fieldName Name of the field.
 	 * @return The field that is now accessible.
 	 */
-	@Deprecated
+	@API(status = API.Status.DEPRECATED, since = "12")
 	public static Field setFieldToAccessible(Class<?> classWithField, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		try {
 			ReflectionUtils.IllegalAccessController.disableWarning(false);
@@ -183,14 +183,14 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Disable the illegal access warnings that may popup during reflection.
+	 * Disable the illegal access warnings that may appear during reflection.
 	 */
 	public static void disableIllegalAccessWarning() {
 		IllegalAccessController.disableWarning(true);
 	}
 
 	/**
-	 * Enable the illegal access warnings that may popup during reflection.
+	 * Enable the illegal access warnings that may appear during reflection.
 	 */
 	public static void enableIllegalAccessWarning() {
 		IllegalAccessController.enableWarning(true);
@@ -252,11 +252,14 @@ public class ReflectionUtils {
 			}
 		}
 
+		@SuppressWarnings("CallToPrintStackTrace")
 		public static void enableWarning(boolean force) {
-			if (force)
+			if (force) {
 				state = WarningState.FORCE_ENABLED;
-			else if (!state.equals(WarningState.FORCE_DISABLED))
+			}
+			else if (!state.equals(WarningState.FORCE_DISABLED)) {
 				state = WarningState.ENABLED;
+			}
 
 			if (isDisabled && !state.equals(WarningState.FORCE_DISABLED)) {
 				try {
@@ -273,6 +276,5 @@ public class ReflectionUtils {
 			}
 		}
 	}
-
 
 }

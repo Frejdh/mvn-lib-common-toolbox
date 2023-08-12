@@ -2,6 +2,8 @@ package com.frejdh.util.common.functional;
 
 import java.util.function.Supplier;
 
+import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+
 @FunctionalInterface
 public interface ThrowingSupplier<R> extends Supplier<R> {
 
@@ -10,7 +12,8 @@ public interface ThrowingSupplier<R> extends Supplier<R> {
 		try {
 			return getThrows();
 		} catch (final Exception e) {
-			throw new RuntimeException(e);
+			sneakyThrow(e);
+			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
 		}
 	}
 

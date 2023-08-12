@@ -1,34 +1,32 @@
 package com.frejdh.util.common.invocations;
 
 import com.frejdh.util.common.functional.ThrowingSupplier;
-import com.frejdh.util.common.invocations.ThrowableUtils;
 
-public abstract class Condition<T> {
-	protected ThrowableUtils<T> parent;
+public abstract class AbstractCondition<T> {
+	protected Conditionals<T> parent;
 	protected boolean hasReturnValue;
 	protected ThrowingSupplier<T> returnValue;
 	protected Throwable throwableValue;
 
 	/**
-	 * Use only this method when constant values are returned. If method invocations are required to get the value,
-	 * please use {@link #thenReturn(ThrowingSupplier)} to ensure only one invocation!
-	 *
-	 * @param returnValue
-	 * @return
+	 * Use only this method when constants shall be returned. If method invocations are required in order to get the value,
+	 * please use {@link #thenReturn(ThrowingSupplier)} instead.
+	 * @param returnValue The value to return if the condition is fulfilled
+	 * @return The {@link Conditionals} instance
 	 */
-	public ThrowableUtils<T> thenReturn(T returnValue) {
+	public Conditionals<T> thenReturn(T returnValue) {
 		this.hasReturnValue = true;
 		this.returnValue = () -> returnValue;
 		return parent;
 	}
 
-	public ThrowableUtils<T> thenReturn(ThrowingSupplier<T> returnValue) {
+	public Conditionals<T> thenReturn(ThrowingSupplier<T> returnValue) {
 		this.hasReturnValue = true;
 		this.returnValue = (returnValue != null) ? returnValue : (() -> null);
 		return parent;
 	}
 
-	public ThrowableUtils<T> thenThrow(Throwable throwable) {
+	public Conditionals<T> thenThrow(Throwable throwable) {
 		this.throwableValue = throwable;
 		return parent;
 	}

@@ -1,0 +1,40 @@
+name: Master Branch Build
+
+env:
+  DEFAULT_GIT_REF: 'master'
+
+on:
+  push:
+    branches: [ master, main, develop ]
+    paths-ignore:
+      - '**.md'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git reference (branch/commit)
+        required: false
+        default: 'master'
+
+jobs:
+  build_and_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    steps:
+      - name: Build and test code
+        uses: Frejdh/action-build-and-test@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          java-version: 17
+          cache-id: v1
+          commitish: "${{ github.event.inputs.ref || env.DEFAULT_GIT_REF }}"
+      - name: Dispatch build successful event
+        if: github.ref_name == env.DEFAULT_GIT_REF
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: ci-successful
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "branch": "${{ github.ref_name }}"}'

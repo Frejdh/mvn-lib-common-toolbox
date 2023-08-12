@@ -2,6 +2,8 @@ package com.frejdh.util.common.functional;
 
 import java.util.function.Consumer;
 
+import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+
 @FunctionalInterface
 public interface ThrowingConsumer<T> extends Consumer<T> {
 	@Override
@@ -9,7 +11,8 @@ public interface ThrowingConsumer<T> extends Consumer<T> {
 		try {
 			acceptThrows(parameter);
 		} catch (final Exception e) {
-			throw new RuntimeException(e);
+			sneakyThrow(e);
+			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
 		}
 	}
 

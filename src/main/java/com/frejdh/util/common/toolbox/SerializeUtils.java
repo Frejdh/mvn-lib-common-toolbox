@@ -1,8 +1,14 @@
 package com.frejdh.util.common.toolbox;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
 /**
@@ -34,23 +40,8 @@ public class SerializeUtils {
 		}
 		String path = (directory != null ? directory + OperatingSystemUtils.getPathSeparator() : "") + filename;
 
-		FileOutputStream outputFile = null;
-		ObjectOutputStream objOut = null;
-		try {
-			outputFile = new FileOutputStream(path);
-			objOut = new ObjectOutputStream(outputFile);
+		try (FileOutputStream outputFile = new FileOutputStream(path); ObjectOutputStream objOut = new ObjectOutputStream(outputFile)) {
 			objOut.writeObject(object); // Handles String and serializable
-		} finally {
-			try {
-				if (objOut != null) {
-					objOut.close();
-				}
-				if (outputFile != null) {
-					outputFile.close();
-				}
-			} catch (Exception exception) {
-				exception.printStackTrace();
-			}
 		}
 	}
 
@@ -89,24 +80,8 @@ public class SerializeUtils {
 	public static <E> E deserializeFromFile(String directory, String filename, Class<E> returnType) throws IOException, ClassNotFoundException {
 		String path = (directory != null ? directory + OperatingSystemUtils.getPathSeparator() : "") + filename;
 
-		FileInputStream inputFile = null;
-		ObjectInputStream objIn = null;
-
-		try {
-			inputFile = new FileInputStream(path);
-			objIn = new ObjectInputStream(inputFile);
+		try (FileInputStream inputFile = new FileInputStream(path); ObjectInputStream objIn = new ObjectInputStream(inputFile)) {
 			return (E) objIn.readObject();
-		} finally {
-			try {
-				if (objIn != null) {
-					objIn.close();
-				}
-				if (inputFile != null) {
-					inputFile.close();
-				}
-			} catch (Exception exception) {
-				exception.printStackTrace();
-			}
 		}
 	}
 

@@ -1,6 +1,19 @@
 Changelog
 -
 
+# 1.3.0
+* Updated dependencies and parent.
+* Added GitHub workflows for CI/CD.
+* Renamed classes
+  * `ThrowableUtils` to `Conditionals`.
+  * `NullSafe` to `Operators`.
+  * `Condition` to `AbstractCondition`.
+  * `EqualsCondition` to `EqualsValueCondition`.
+* Also renamed method `NullSafe.safe()` to `Operators.safeCall()` (Kotlin inspiration).
+* Moved method `replaceIllegalFilenameCharacters()` from `CommonUtils` to `OperatingSystemUtils`
+* Extended `Conditionals` class to support custom predicates, and blank values.
+* More unit tests.
+
 # 1.2.0
 * Fixed `firstNonNull` method in `NullSafe`. Previously a null value could still be returned in some scenarios.
 * Optimized performance of `ThrowableUtils` (and `NullSafe`) classes. Removed unnecessary method invocations.
@@ -9,7 +22,7 @@ Changelog
 
 # 1.1.0
 * Dependency versions now defined in parent instead for better sync between projects.
-* Parameterized some tests
+* Parameterized some tests.
 
 # 1.0.8
 * Added `firstNonNull` methods in `NullSafe` helper class for nested elvis-like cases.
@@ -18,7 +31,7 @@ Changelog
 * Added support for JDK versions above JDK 8 (tested with JDK 17).
 
 # 1.0.6
-* Upgraded parent and dependency versions
+* Upgraded parent and dependency versions.
   * Also removed spring-boot as a dependency.
 * Added an additional `NullSafe` method.
 

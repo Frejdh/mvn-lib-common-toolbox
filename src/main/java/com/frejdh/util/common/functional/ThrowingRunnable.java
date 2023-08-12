@@ -1,5 +1,7 @@
 package com.frejdh.util.common.functional;
 
+import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+
 @FunctionalInterface
 public interface ThrowingRunnable extends Runnable {
 
@@ -8,7 +10,8 @@ public interface ThrowingRunnable extends Runnable {
 		try {
 			runThrows();
 		} catch (final Exception e) {
-			throw new RuntimeException(e);
+			sneakyThrow(e);
+			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
 		}
 	}
 
