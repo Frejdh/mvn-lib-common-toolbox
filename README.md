@@ -7,19 +7,19 @@ methods and exceptions.
 All available classes can be found [here](https://github.com/Frejdh/mvn-lib-common-toolbox/tree/master/src/main/java/com/frejdh/util/common).
 
 ## Adding the dependency
-```
+```xml
 <dependencies>
     <dependency>
         <groupId>com.frejdh.util.common</groupId>
         <artifactId>common-toolbox</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0</version>
     </dependency>
 </dependencies>
 
-<repositories> <!-- Required in order to resolve this package -->
+<repositories> <!-- Required in order to resolve this dependency -->
     <repository>
-        <id>mvn-lib-common-toolbox</id>
-        <url>https://raw.github.com/Frejdh/mvn-lib-common-toolbox/releases/</url>
+        <id>frejdh</id>
+        <url>https://raw.github.com/Frejdh/releases/maven</url>
     </repository>
 </repositories>
 ```

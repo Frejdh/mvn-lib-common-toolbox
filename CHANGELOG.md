@@ -9,10 +9,11 @@ Changelog
   * `NullSafe` to `Operators`.
   * `Condition` to `AbstractCondition`.
   * `EqualsCondition` to `EqualsValueCondition`.
-* Also renamed method `NullSafe.safe()` to `Operators.safeCall()` (Kotlin inspiration).
-* Moved method `replaceIllegalFilenameCharacters()` from `CommonUtils` to `OperatingSystemUtils`
-* Extended `Conditionals` class to support custom predicates, and blank values.
+* Renamed method `NullSafe.safe()` to `Operators.safeCall()`.
+* Moved method `replaceIllegalFilenameCharacters()` from `CommonUtils` to `OperatingSystemUtils`.
+* Extended `Conditionals` class to support custom predicates, and to check for blank values.
 * More unit tests.
+* Now uses external [Frejdh/releases](https://github.com/Frejdh/releases) repository for 'Frejdh' dependencies.
 
 # 1.2.0
 * Fixed `firstNonNull` method in `NullSafe`. Previously a null value could still be returned in some scenarios.
