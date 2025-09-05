@@ -20,6 +20,8 @@ import java.util.TimeZone;
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class DateUtils {
 
+	protected DateUtils() {}
+
 	/**
 	 * Returns a date based on a string
 	 * @param date String to format

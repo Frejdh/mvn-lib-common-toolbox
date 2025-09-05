@@ -13,6 +13,8 @@ import java.util.*;
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class CommonUtils {
 
+	protected CommonUtils() {}
+
 	/**
 	 * Match any number with. The decimal (.) and the negative character (-) are accepted
 	 *

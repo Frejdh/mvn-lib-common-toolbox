@@ -2,12 +2,21 @@ package com.frejdh.util.common.invocations;
 
 import java.util.List;
 
-public class EqualsValueCondition<T> extends AbstractCondition<T> {
-	protected List<T> equalsToValue;
+/**
+ * An implementation of the {@link AbstractCondition} that's used to for equivalence for different values.
+ * @param <T> The value type.
+ * @author Kevin Frejdh
+ */
+public class EqualsValueCondition<T, R> extends AbstractCondition<T, R> {
+	protected List<T> equalsToAnyValue;
 
-	public EqualsValueCondition(Conditionals<T> parent, List<T> equalsToValue) {
+	public EqualsValueCondition(Conditionals<T, R> parent, List<T> equalsToAnyValue) {
 		this.parent = parent;
-		this.equalsToValue = equalsToValue;
+		this.equalsToAnyValue = equalsToAnyValue;
+	}
+
+	public EqualsValueCondition(Conditionals<T, R> parent, T equalsToValue) {
+		this(parent, List.of(equalsToValue));
 	}
 
 }

@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ConditionalsTest {
+class ConditionalsTest {
 
 	private static final String EXPECTED_VALUE = "expectedValue";
 
@@ -27,6 +27,8 @@ public class ConditionalsTest {
 				.thenReturn(EXPECTED_VALUE)
 				.execute();
 		assertEquals(EXPECTED_VALUE, retval);
+
+		Conditionals.when("").execute();
 	}
 
 	@Test
@@ -97,7 +99,7 @@ public class ConditionalsTest {
 	@MethodSource("nonBlankValues")
 	@ParameterizedTest
 	void equalsToBlankWhenProvidingBlankValue(Object value) {
-		Object retvalForMatchingPredicateValue = Conditionals.when(() -> value)
+		Object retvalForMatchingPredicateValue = Conditionals.when(value)
 				.equalsToBlank()
 				.thenReturn(EXPECTED_VALUE)
 				.execute();
@@ -122,18 +124,18 @@ public class ConditionalsTest {
 	}
 
 	@Test
-	void equalsToPredicate() {
+	void fulfills() {
 		String predicateValue = "MATCHING VALUE";
-		Predicate<String> predicate = (value) -> value.equals(predicateValue);
+		Predicate<String> predicate = value -> value.equals(predicateValue);
 
-		String retvalForMatchingPredicateValue = Conditionals.when(() -> predicateValue)
-				.equalsToPredicate(predicate)
+		String retvalForMatchingPredicateValue = Conditionals.when(predicateValue)
+				.fulfills(predicate)
 				.thenReturn(EXPECTED_VALUE)
 				.execute();
 		assertEquals(EXPECTED_VALUE, retvalForMatchingPredicateValue);
 
-		String retvalForNoMatchingPredicateValue = Conditionals.when(() -> predicateValue)
-				.equalsToPredicate(predicate.negate())
+		String retvalForNoMatchingPredicateValue = Conditionals.when(predicateValue)
+				.fulfills(predicate.negate())
 				.thenReturn(EXPECTED_VALUE)
 				.execute();
 		assertEquals(predicateValue, retvalForNoMatchingPredicateValue);

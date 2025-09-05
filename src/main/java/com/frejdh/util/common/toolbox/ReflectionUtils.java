@@ -3,6 +3,7 @@ package com.frejdh.util.common.toolbox;
 import com.frejdh.util.common.functional.ThrowingConsumer;
 import com.frejdh.util.common.functional.ThrowingFunction;
 import com.frejdh.util.common.invocations.Operators;
+import lombok.extern.log4j.Log4j2;
 import org.apiguardian.api.API;
 
 import java.lang.reflect.Field;
@@ -16,8 +17,11 @@ import java.lang.reflect.Modifier;
  *
  * @author Kevin Frejdh
  */
+@Log4j2
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class ReflectionUtils {
+
+	protected ReflectionUtils() {}
 
 	/**
 	 * Invoke a method for a given instance.
@@ -56,8 +60,9 @@ public class ReflectionUtils {
 	 * @param newValue The new value to set.
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
+	 * @apiNote Requires JVM argument: {@code --add-opens java.base/java.lang=ALL-UNNAMED} for JDK 17 or above.
 	 */
-	@API(status = API.Status.DEPRECATED, since = "12")
+	@API(status = API.Status.EXPERIMENTAL, since = "12")
 	public static void setVariable(Object instanceWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		Field field = setFieldToAccessible(instanceWithVariable.getClass(), fieldName);
 		field.set(instanceWithVariable, newValue);
@@ -73,8 +78,9 @@ public class ReflectionUtils {
 	 * @param newValue The new value to set.
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
+	 * @apiNote Requires JVM argument: {@code --add-opens java.base/java.lang=ALL-UNNAMED} for JDK 17 or above.
 	 */
-	@API(status = API.Status.DEPRECATED, since = "12")
+	@API(status = API.Status.EXPERIMENTAL, since = "12")
 	public static void setStaticVariable(Class<?> classWithVariable, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -86,15 +92,16 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Get a non-primitive and static value found inside of a class.
+	 * Get a non-primitive and static value found inside a class.
 	 * This method also works on variables that are final (for JDK 11 or below).
 	 *
 	 * @param classWithVariable The class containing the variable to fetch.
 	 * @param fieldName The name of the field to get.
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
+	 * @apiNote Requires JVM argument: {@code --add-opens java.base/java.lang=ALL-UNNAMED} for JDK 17 or above.
 	 */
-	@API(status = API.Status.DEPRECATED, since = "12")
+	@API(status = API.Status.EXPERIMENTAL, since = "12")
 	public static <T> T getVariable(Class<?> classWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				classWithVariable,
@@ -111,8 +118,9 @@ public class ReflectionUtils {
 	 * @param fieldName The name of the field to get.
 	 * @throws NoSuchFieldException   No field found.
 	 * @throws IllegalAccessException Security related exception.
+	 * @apiNote Requires JVM argument: {@code --add-opens java.base/java.lang=ALL-UNNAMED} for JDK 17 or above.
 	 */
-	@API(status = API.Status.DEPRECATED, since = "12")
+	@API(status = API.Status.EXPERIMENTAL, since = "12")
 	public static <I, T> T getVariable(I instanceWithVariable, String fieldName, Class<T> castTo) throws NoSuchFieldException, IllegalAccessException {
 		return doOperationWithFieldAccessEnabled(
 				instanceWithVariable.getClass(),
@@ -147,8 +155,9 @@ public class ReflectionUtils {
 	 * @param classWithField Class containing the field.
 	 * @param fieldName Name of the field.
 	 * @return The field that is now accessible.
+	 * @apiNote Requires JVM argument: {@code --add-opens java.base/java.lang=ALL-UNNAMED} for JDK 17 or above.
 	 */
-	@API(status = API.Status.DEPRECATED, since = "12")
+	@API(status = API.Status.EXPERIMENTAL, since = "12")
 	public static Field setFieldToAccessible(Class<?> classWithField, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		try {
 			ReflectionUtils.IllegalAccessController.disableWarning(false);
@@ -164,6 +173,12 @@ public class ReflectionUtils {
 		}
 	}
 
+	/**
+	 * Get the {@link Class} instance based on a string path.
+	 * @param outerClassPath The outer class path (including the package and class name).
+	 * @param nameOfInnerClassOrEnum Varargs argument for merging the path with inner classes or enums.
+	 * @return A {@link Class} instance, or null if none was found.
+	 */
 	public static Class<?> getInnerClassOrEnum(String outerClassPath, String... nameOfInnerClassOrEnum) {
 		StringBuilder path = new StringBuilder(outerClassPath);
 		for (String p : nameOfInnerClassOrEnum) {
@@ -173,7 +188,7 @@ public class ReflectionUtils {
 		try {
 			return Class.forName(path.toString());
 		} catch (ClassNotFoundException e) {
-			System.out.println("The class '" + path + "' couldn't be found.");
+			log.debug("The class '{}' could not be resolved", path, e);
 			return null;
 		}
 	}
@@ -186,6 +201,7 @@ public class ReflectionUtils {
 	 * Disable the illegal access warnings that may appear during reflection.
 	 */
 	public static void disableIllegalAccessWarning() {
+		log.debug("Disabling illegal access warning");
 		IllegalAccessController.disableWarning(true);
 	}
 
@@ -193,6 +209,7 @@ public class ReflectionUtils {
 	 * Enable the illegal access warnings that may appear during reflection.
 	 */
 	public static void enableIllegalAccessWarning() {
+		log.debug("Enabling illegal access warning");
 		IllegalAccessController.enableWarning(true);
 	}
 
@@ -248,7 +265,8 @@ public class ReflectionUtils {
 				unsafeObj = getObjectVolatile.invoke(unsafe, loggerClass, offset);
 				putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
 				isDisabled = true;
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				log.error("Unhandled exception when disabling invocation warnings", e);
 			}
 		}
 
@@ -271,7 +289,7 @@ public class ReflectionUtils {
 					putObjectVolatile.invoke(unsafe, loggerClass, offset, unsafeObj);
 					isDisabled = false;
 				} catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e) {
-					e.printStackTrace();
+					log.error("Unhandled exception when enabling invocation warnings", e);
 				}
 			}
 		}

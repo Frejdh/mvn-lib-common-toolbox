@@ -1,7 +1,6 @@
 package com.frejdh.util.common.toolbox;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -11,8 +10,15 @@ import java.nio.file.Paths;
  * @author Kevin Frejdh
  */
 public class OperatingSystemUtils {
-	private volatile static String name;
-	private volatile static OperatingSystemType type;
+	private static volatile String name;
+	private static volatile OperatingSystemType type;
+
+	protected OperatingSystemUtils() {}
+
+	/**
+	 * The path separator used by the OS.
+	 */
+	public static final String SEPARATOR = isWindows() ? "\\" : "/";
 
 	public enum OperatingSystemType {
 		WINDOWS,
@@ -72,10 +78,7 @@ public class OperatingSystemUtils {
 	 * @return A backslash or forward slash string depending on the OS
 	 */
 	public static String getPathSeparator() {
-		if (isWindows())
-			return "\\";
-		else
-			return "/";
+		return SEPARATOR;
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class OperatingSystemUtils {
 			if (isFirstPath) {
 				isFirstPath = false;
 			} else {
-				sb.append(getPathSeparator());
+				sb.append(SEPARATOR);
 			}
 			sb.append(p);
 		}
@@ -152,7 +155,7 @@ public class OperatingSystemUtils {
 
 	/**
 	 * Compliant with Windows, UNIX and filesystem naming schemes.
-	 * Replaces characters that are unsupported to a fully functional unicode variant.
+	 * Replaces characters that are unsupported to a fully functional Unicode variant.
 	 *
 	 * @param filename Filename to replace characters of. <u>Note, this cannot be a full path!</u>
 	 * @return A new string with the illegal characters replaced
