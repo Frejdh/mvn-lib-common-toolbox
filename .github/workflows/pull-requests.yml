@@ -23,6 +23,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          java-version: 17
-          cache-id: v1
+          java-version: 21
           commitish: "${{ github.event.pull_request.head.ref || github.event.inputs.ref || env.DEFAULT_GIT_REF }}"

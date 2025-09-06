@@ -2,6 +2,7 @@ name: Release in another repository
 
 env:
   EVENT_BRANCH_NAME: ${{ github.head_ref || github.ref_name || '' }}
+  DEFAULT_ENV: release
   DEFAULT_FRAMEWORK: Maven
   DEFAULT_TAG_ENABLED: true
   DEFAULT_TAG_PATTERN: '^(?!.+(-SNAPSHOT)$).+$'
@@ -19,6 +20,11 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
     inputs:
+      environment:
+        description: "Job environment"
+        default: 'release'
+        required: true
+        type: environment
       project-framework:
         description: Project framework
         type: choice
@@ -41,7 +47,7 @@ on:
       create-tag-enabled:
         description: Create a tag
         type: boolean
-        default: 'true'
+        default: true
 
       create-tag-pattern:
         description: The pattern that should generate tags. JavaScript regex syntax
@@ -51,7 +57,7 @@ on:
       create-tag-allow-override:
         description: Override existing tags
         type: boolean
-        default: 'true'
+        default: true
 
       release-branch-repository:
         description: Target repository that shall contain the release
@@ -60,11 +66,12 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || env.DEFAULT_ENV }}
     steps:
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@master
         with:
-          github-token: ${{ secrets.RELEASE_PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.RELEASE_PAT_TOKEN }}
           project-framework: ${{ inputs.project-framework || env.DEFAULT_FRAMEWORK }}
           build-arguments: ${{ inputs.build-arguments }}
           commitish: ${{ inputs.commitish || env.EVENT_BRANCH_NAME }}
