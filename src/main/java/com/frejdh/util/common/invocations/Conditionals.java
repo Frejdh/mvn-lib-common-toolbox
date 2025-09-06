@@ -1,5 +1,6 @@
 package com.frejdh.util.common.invocations;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.frejdh.util.common.functional.ThrowingSupplier;
 
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class Conditionals<T, R> {
 	 * @param action The supplier function.
 	 * @param returnType Only used for compiling purposes. Required for Java in order to understand the return type.
 	 */
-	protected Conditionals(ThrowingSupplier<T> action, Class<R> returnType) {
+	protected Conditionals(ThrowingSupplier<T> action, TypeReference<R> returnType) {
 		this.action = action;
 	}
 
@@ -73,6 +74,17 @@ public class Conditionals<T, R> {
 	 * @return An instance of {@link Conditionals}
 	 */
 	public static <T, R> Conditionals<T, R> when(ThrowingSupplier<T> action, Class<R> returnType) {
+		return when(action, new TypeReference<>() {});
+	}
+
+	/**
+	 * Creates an instance based on the supplier function.
+	 * @param action The operation to execute. It's allowed to throw exceptions.
+	 * @param <T> The argument type.
+	 * @param <R> The return type.
+	 * @return An instance of {@link Conditionals}
+	 */
+	public static <T, R> Conditionals<T, R> when(ThrowingSupplier<T> action, TypeReference<R> returnType) {
 		return new Conditionals<>(action, returnType);
 	}
 
@@ -94,6 +106,17 @@ public class Conditionals<T, R> {
 	 * @return An instance of {@link Conditionals}
 	 */
 	public static <T, R> Conditionals<T, R> when(T value, Class<R> returnType) {
+		return when(() -> value, new TypeReference<>() {});
+	}
+
+	/**
+	 * Creates an instance based on the supplier function.
+	 * @param value The value to apply conditions on.
+	 * @param <T> The argument type.
+	 * @param <R> The return type.
+	 * @return An instance of {@link Conditionals}
+	 */
+	public static <T, R> Conditionals<T, R> when(T value, TypeReference<R> returnType) {
 		return new Conditionals<>(() -> value, returnType);
 	}
 
