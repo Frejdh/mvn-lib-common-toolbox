@@ -11,9 +11,14 @@
 	</parent>
 
 	<groupId>com.frejdh.util.common</groupId>
-	<artifactId>common-toolbox</artifactId>
+	<artifactId>common-toolbox-parent</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>common-toolbox</module>
+		<module>common-toolbox-kotlin</module>
+	</modules>
 
 	<dependencies>
 		<dependency>
@@ -69,11 +74,6 @@
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
 
@@ -88,6 +88,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
@@ -98,10 +103,36 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.frejdh.util.common</groupId>
+				<artifactId>common-toolbox-parent</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.frejdh.util.common</groupId>
+				<artifactId>common-toolbox</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.frejdh.util.common</groupId>
+				<artifactId>common-toolbox-kotlin</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+
 		<repository>
 			<id>frejdh</id>
 			<url>https://raw.githubusercontent.com/Frejdh/releases/maven</url>
