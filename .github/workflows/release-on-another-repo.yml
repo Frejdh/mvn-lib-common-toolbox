@@ -65,7 +65,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment || vars.DEFAULT_ENV || 'release' }}
+    environment: ${{ inputs.environment || vars.RELEASE_ENV || 'release' }}
     steps:
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@master
