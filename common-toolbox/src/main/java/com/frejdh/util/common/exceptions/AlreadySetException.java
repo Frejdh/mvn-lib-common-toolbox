@@ -7,15 +7,33 @@ package com.frejdh.util.common.exceptions;
  * @author Kevin Frejdh
  */
 public class AlreadySetException extends RuntimeException {
-	public AlreadySetException(String msg, Throwable e) {
-		super(msg, e);
+
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public AlreadySetException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	public AlreadySetException(String msg) {
-		super(msg);
+	/**
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public AlreadySetException(String message) {
+		super(message);
 	}
 
+	/**
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public AlreadySetException(Throwable cause) {
+		super(cause);
+	}
+
+	/**
+	 * @see RuntimeException#RuntimeException()
+	 */
 	public AlreadySetException() {
 		super();
 	}
+
 }

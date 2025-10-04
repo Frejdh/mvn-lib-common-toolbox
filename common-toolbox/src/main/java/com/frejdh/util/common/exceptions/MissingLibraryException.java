@@ -5,16 +5,34 @@ package com.frejdh.util.common.exceptions;
  *
  * @author Kevin Frejdh
  */
-public class MissingLibraryException extends Exception {
-	public MissingLibraryException(String msg, Throwable e) {
-		super(msg, e);
+public class MissingLibraryException extends RuntimeException {
+
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public MissingLibraryException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	public MissingLibraryException(String msg) {
-		super(msg);
+	/**
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public MissingLibraryException(String message) {
+		super(message);
 	}
 
+	/**
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public MissingLibraryException(Throwable cause) {
+		super(cause);
+	}
+
+	/**
+	 * @see RuntimeException#RuntimeException()
+	 */
 	public MissingLibraryException() {
 		super();
 	}
+
 }

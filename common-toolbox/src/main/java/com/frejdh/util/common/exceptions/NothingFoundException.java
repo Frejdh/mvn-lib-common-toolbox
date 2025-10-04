@@ -7,15 +7,33 @@ package com.frejdh.util.common.exceptions;
  * @author Kevin Frejdh
  */
 public class NothingFoundException extends RuntimeException {
-	public NothingFoundException(String msg, Throwable e) {
-		super(msg, e);
+
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public NothingFoundException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	public NothingFoundException(String msg) {
-		super(msg);
+	/**
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public NothingFoundException(String message) {
+		super(message);
 	}
 
+	/**
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public NothingFoundException(Throwable cause) {
+		super(cause);
+	}
+
+	/**
+	 * @see RuntimeException#RuntimeException()
+	 */
 	public NothingFoundException() {
 		super();
 	}
+
 }

@@ -1,9 +1,17 @@
 package com.frejdh.util.common.toolbox;
 
+import jakarta.annotation.Nonnull;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
+
+import java.util.regex.Pattern;
+
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Generic toolbox class.
@@ -11,18 +19,132 @@ import java.util.*;
  * @author Kevin Frejdh
  */
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
+@Log4j2
 public class CommonUtils {
 
 	protected CommonUtils() {}
 
 	/**
-	 * Match any number with. The decimals {@code .,} and the dash character {@code -} are accepted.
+	 * Checks if the number can be considered numeric. Accepts negative and decimal numbers.
 	 *
-	 * @param str String to check
+	 * @param input String to check
+	 * @param allowCommaDecimal Whether to allow comma ({@code ,}) decimals or not. Default: {@code true}.
 	 * @return A boolean indicating whether the string was numeric or not
 	 */
-	public static boolean isNumeric(String str) {
-		return str.matches("-?\\d+([.,]\\d+)?");
+	public static boolean isNumeric(String input, boolean allowCommaDecimal) {
+		return isNumericImpl(input, allowCommaDecimal ? ",." : ".");
+	}
+
+	/**
+	 * Checks if the number can be considered numeric. Accepts negative and decimal numbers.
+	 *
+	 * @param input String to check
+	 * @return A boolean indicating whether the string was numeric or not
+	 */
+	public static boolean isNumeric(String input) {
+		return isNumericImpl(input, ",.");
+	}
+
+	private static boolean isNumericImpl(String input, String decimalCharacters) {
+		if (input == null) {
+			return false;
+		}
+
+		return input.matches("-?\\d+([" + decimalCharacters + "]\\d+)?");
+	}
+
+	/**
+	 * Converts a {@link String} to a {@link BigInteger} instance.
+	 * The numeric check is based on the return value of the {@link #isNumeric(String)} method.
+	 * Unlike the native {@link BigInteger#BigInteger(String)} constructor,
+	 * this implementation allows comma decimal values, integer values, and does not throw exceptions.
+	 * @param input The string value to convert.
+	 * @return A {@link BigInteger} value or null if the value could not be converted.
+	 */
+	public static BigInteger toBigInteger(String input) {
+		var bigDecimal = toBigDecimal(input);
+		return (bigDecimal != null) ? bigDecimal.toBigInteger() : null;
+	}
+
+	/**
+	 * Converts a {@link String} to a {@link BigDecimal} instance.
+	 * The numeric check is based on the return value of the {@link #isNumeric(String)} method.
+	 * Unlike the native {@link BigDecimal#BigDecimal(String)} constructor,
+	 * this implementation allows comma decimal values, integer values, and does not throw exceptions.
+	 * @param input The string value to convert.
+	 * @return A {@link BigDecimal} value or null if the value could not be converted.
+	 */
+	public static BigDecimal toBigDecimal(String input) {
+		if (input == null) {
+			return null;
+		}
+
+		String formattedInput = input.replace(",", ".").replaceAll("^0+", "");
+
+		// Add a decimal if missing, otherwise it won't be accepted by the BigDecimal constructor
+		if (!formattedInput.matches(".+\\.\\d+")) {
+			formattedInput = formattedInput + ".0";
+		}
+
+		try {
+			return new BigDecimal(formattedInput);
+		} catch (NumberFormatException e) {
+			log.warn("Failed to convert number [{}] to a {} instance", input, BigDecimal.class.getCanonicalName(), e);
+			return null;
+		}
+	}
+
+	/**
+	 * Converts a {@link String} to a {@link Double} instance.
+	 * The numeric check is based on the return value of the {@link #isNumeric(String)} method.
+	 * Unlike the native {@link Double#parseDouble(String)} constructor,
+	 * this implementation allows comma decimal values and does not throw exceptions.
+	 * @param input The string value to convert.
+	 * @return A {@link Double} value or null if the value could not be converted.
+	 */
+	public static Double toDouble(String input) {
+		if (input == null) {
+			return null;
+		}
+
+		try {
+			return Double.parseDouble(input.replace(",", ".").replaceAll("^0+", ""));
+		} catch (NumberFormatException e) {
+			log.warn("Failed to convert number [{}] to a {} instance", input, Double.class.getCanonicalName(), e);
+			return null;
+		}
+	}
+
+	/**
+	 * Converts a {@link String} to a {@link Integer} instance.
+	 * The numeric check is based on the return value of the {@link #isNumeric(String)} method.
+	 * Unlike the native {@link Integer#parseInt(String)} constructor,
+	 * this implementation allows comma decimal values and does not throw exceptions.
+	 * @param input The string value to convert.
+	 * @return A {@link Integer} value or null if the value could not be converted.
+	 */
+	public static Integer toInteger(String input) {
+		var doubleValue = toDouble(input);
+
+		if (doubleValue != null && (doubleValue > Integer.MAX_VALUE || doubleValue < Integer.MIN_VALUE)) {
+			log.warn("Failed to convert number [{}] to a {} instance. Reason: Value out of range", input, Integer.class.getCanonicalName());
+			return null;
+		}
+
+		return (doubleValue != null) ? doubleValue.intValue() : null;
+	}
+
+	/**
+	 * Converts a {@link String} to a {@link Long} instance.
+	 * The numeric check is based on the return value of the {@link #isNumeric(String)} method.
+	 * Unlike the native {@link Long#parseLong(String)} constructor,
+	 * this implementation allows comma decimal values and does not throw exceptions.
+	 * @param input The string value to convert.
+	 * @return A {@link Long} value or null if the value could not be converted.
+	 */
+	public static Long toLong(String input) {
+		var doubleValue = toDouble(input);
+		return (doubleValue != null) ? doubleValue.longValue() : null;
 	}
 
 	/**
@@ -408,14 +530,13 @@ public class CommonUtils {
 	 * @return A string based on the array elements.
 	 */
 	public static <T> String arrayToString(T[] array) {
-		if (array == null)
-			return "null";
-		else if (array.length == 0)
+		if (array == null || array.length == 0) {
 			return "[]";
+		}
 
-		StringBuilder sb = new StringBuilder("[").append(array[0]);
+		StringBuilder sb = new StringBuilder("[");
 		boolean isFirst = true;
-		for (int i = 1; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) {
 			sb.append(array[i]);
 
 			// Check if another element exists
@@ -427,23 +548,44 @@ public class CommonUtils {
 	}
 
 	/**
-	 * String to list. Elements separated by comma
+	 * Converts a string to list. Elements are separated by a specific pattern.
 	 * @param text Text to separate into lists
-	 * @param separatorCharacters Separator characters as one string
+	 * @param separator Separator characters as one string. Default: {@code ,}
 	 * @return A list
 	 */
-	public static List<String> stringToList(String text, String separatorCharacters) {
-		return new ArrayList<>(Arrays.asList(text.split("\\s*[" + separatorCharacters + "]\\s*"))); // Mutable
+	public static List<String> stringToList(String text, @Nonnull String separator) {
+		if (text == null) {
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(Arrays.asList(text.split("\\s*(" + Pattern.quote(separator) + ")", -1))); // Mutable
+	}
+
+	/**
+	 * Converts a string to list. Elements separated by comma.
+	 * @param text Text to separate into lists
+	 * @return A list
+	 */
+	public static List<String> stringToList(String text) {
+		return stringToList(text, ",");
+	}
+
+	/**
+	 * Sneaky throws an exception with the original type. Doesn't require the calling code to have a try/catch when using this method.
+	 * @param cause The exception to throw
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E extends Throwable> void sneakyThrow(Throwable cause) throws E {
+		throw (E) cause;
 	}
 
 	/**
 	 * Sneaky throws an exception. Doesn't require the calling code to have a try/catch when using this method.
-	 * @param e The exception to throw
+	 * @param cause The exception to throw
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
-		throw (E) e;
+	@SuppressWarnings("java:S112")
+	public static RuntimeException wrapAsRuntimeException(Throwable cause) {
+		return (cause instanceof RuntimeException runtimeException ? runtimeException : new RuntimeException(cause.getMessage(), cause));
 	}
-
 
 }

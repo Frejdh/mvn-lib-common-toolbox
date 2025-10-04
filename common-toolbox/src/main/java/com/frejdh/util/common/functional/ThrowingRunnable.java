@@ -1,9 +1,9 @@
 package com.frejdh.util.common.functional;
 
-import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
-import static org.apiguardian.api.API.Status.INTERNAL;
-
 import org.apiguardian.api.API;
+
+import static com.frejdh.util.common.toolbox.CommonUtils.wrapAsRuntimeException;
+import static org.apiguardian.api.API.Status.INTERNAL;
 
 /**
  * {@link Runnable} implementation capable of throwing exceptions inside of it.
@@ -15,9 +15,8 @@ public interface ThrowingRunnable extends Runnable {
 	default void run() {
 		try {
 			runThrows();
-		} catch (final Exception e) {
-			sneakyThrow(e);
-			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
+		} catch (final Throwable e) {
+			throw wrapAsRuntimeException(e);
 		}
 	}
 
@@ -25,5 +24,6 @@ public interface ThrowingRunnable extends Runnable {
 	 * Please don't use this directly. Please use {@link #run()} instead.
 	 */
 	@API(status = INTERNAL)
-	void runThrows() throws Exception;
+	@SuppressWarnings("java:S112")
+	void runThrows() throws Throwable;
 }

@@ -1,10 +1,10 @@
 package com.frejdh.util.common.functional;
 
-import java.util.function.Consumer;
-
 import org.apiguardian.api.API;
 
-import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+import java.util.function.Consumer;
+
+import static com.frejdh.util.common.toolbox.CommonUtils.wrapAsRuntimeException;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 /**
@@ -16,9 +16,8 @@ public interface ThrowingConsumer<T> extends Consumer<T> {
 	default void accept(T parameter) {
 		try {
 			acceptThrows(parameter);
-		} catch (final Exception e) {
-			sneakyThrow(e);
-			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
+		} catch (final Throwable e) {
+			throw wrapAsRuntimeException(e);
 		}
 	}
 
@@ -26,6 +25,7 @@ public interface ThrowingConsumer<T> extends Consumer<T> {
 	 * Please don't use this directly. Please use {@link #accept(Object)} instead.
 	 */
 	@API(status = INTERNAL)
-	void acceptThrows(T parameter) throws Exception;
+	@SuppressWarnings("java:S112")
+	void acceptThrows(T parameter) throws Throwable;
 
 }

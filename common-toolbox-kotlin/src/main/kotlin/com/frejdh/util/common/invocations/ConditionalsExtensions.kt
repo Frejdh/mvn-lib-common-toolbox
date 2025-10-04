@@ -10,8 +10,8 @@ package com.frejdh.util.common.invocations
  * ```
  * @param T The original type for the object. Recommended to omit.
  */
-fun <T : Any> T.asConditional(): Conditionals<T, T> {
-    return Conditionals.`when`(this)
+fun <T : Any?> T?.asConditional(): Conditionals<T, T> {
+    return Conditionals.whenever(this)
 }
 
 /**
@@ -25,6 +25,6 @@ fun <T : Any> T.asConditional(): Conditionals<T, T> {
  * @param T The original type for the object. Recommended to use the [underscore operator](https://kotlinlang.org/docs/generics.html#underscore-operator-for-type-arguments) to infer the type.
  * @param R The new return type to use.
  */
-inline fun <T : Any, reified R : Any> T.asTypedConditional(): Conditionals<T, R> {
-    return Conditionals.`when`(this, R::class.java)
+inline fun <T : Any?, reified R : Any?> T?.asTypedConditional(): Conditionals<T, R> {
+    return Conditionals.whenever(this, R::class.java)
 }

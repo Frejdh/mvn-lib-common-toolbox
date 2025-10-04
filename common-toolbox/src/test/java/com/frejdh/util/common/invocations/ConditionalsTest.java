@@ -1,5 +1,6 @@
 package com.frejdh.util.common.invocations;
 
+import com.frejdh.util.common.exceptions.NothingFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -75,6 +76,14 @@ class ConditionalsTest {
 				.throwsAnyException()
 				.thenThrow(new IOException())
 				.execute()
+		);
+
+		assertThrows(NothingFoundException.class, () -> Conditionals.when(() -> {
+							throw new IllegalStateException();
+						})
+						.throwsAnyException()
+						.thenThrow(NothingFoundException::new)
+						.execute()
 		);
 	}
 

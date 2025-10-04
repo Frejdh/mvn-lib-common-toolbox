@@ -46,3 +46,10 @@ fun <T : Any> T.overrideMerge(other: T): T {
 fun CharSequence?.toList(separator: String = ","): List<CharSequence> {
     return CommonUtils.stringToList(this?.toString() ?: "", separator)
 }
+
+/**
+ * @see CommonUtils.arrayToString
+ */
+fun Array<Any>.toPrettyString(): String {
+    return CommonUtils.arrayToString(this)
+}

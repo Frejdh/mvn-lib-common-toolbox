@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="https://logging.apache.org/xml/ns"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="
+                   https://logging.apache.org/xml/ns
+                   https://logging.apache.org/xml/ns/log4j-config-2.xsd">
+	<Appenders>
+		<Console name="CONSOLE">
+			<!--suppress XmlUnresolvedReference -->
+			<PatternLayout pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{${sys:PID:-%t}}{magenta} [%15.15t] %style{%-40.40C{1.}}{cyan} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%xEx}" disableAnsi="${env:DISABLE_ANSI:-false}"/>
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO" additivity="false">
+			<AppenderRef ref="CONSOLE"/>
+		</Root>
+
+		<Logger name="com.frejdh" level="TRACE"/>
+	</Loggers>
+
+</Configuration>

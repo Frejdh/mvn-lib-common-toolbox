@@ -1,6 +1,7 @@
 package com.frejdh.util.common.invocations;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.frejdh.util.common.annotation.IntendedForKotlin;
 import com.frejdh.util.common.functional.ThrowingSupplier;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -93,7 +94,7 @@ public class Conditionals<T, R> {
 	}
 
 	/**
-	 * Creates a simple monotype instance based on the supplier function.
+	 * Creates a simple monotype instance based on the supplied value.
 	 * @param value The value to apply conditions on.
 	 * @param <T> The argument and return type.
 	 * @return An instance of {@link Conditionals}
@@ -103,7 +104,19 @@ public class Conditionals<T, R> {
 	}
 
 	/**
-	 * Creates an instance based on the supplier function.
+	 * Same as {@link #when(Object)}. Created for the {@code Kotlin} language as the usage of {@code when} refers to a reserved keyword.
+	 * @param value The value to apply conditions on.
+	 * @param <T> The argument and return type.
+	 * @return An instance of {@link Conditionals}
+	 * @see #when(Object)
+	 */
+	@IntendedForKotlin(value = "Please use other `when` methods for regular Java", alternatives = "#when(Object)")
+	public static <T> Conditionals<T, T> whenever(T value) {
+		return when(value);
+	}
+
+	/**
+	 * Creates an instance based on the supplied value.
 	 * @param value The value to apply conditions on.
 	 * @param <T> The argument type.
 	 * @param <R> The return type.
@@ -111,6 +124,19 @@ public class Conditionals<T, R> {
 	 */
 	public static <T, R> Conditionals<T, R> when(T value, Class<R> returnType) {
 		return when(() -> value, new TypeReference<>() {});
+	}
+
+	/**
+	 * Same as {@link #when(Object, Class)}. Created for the {@code Kotlin} language as the usage of {@code when} refers to a reserved keyword.
+	 * @param value The value to apply conditions on.
+	 * @param <T> The argument type.
+	 * @param <R> The return type.
+	 * @return An instance of {@link Conditionals}
+	 * @see #when(Object, Class)
+	 */
+	@IntendedForKotlin(value = "Please use other `when` methods for regular Java", alternatives = "#when(Object, Class)")
+	public static <T, R> Conditionals<T, R> whenever(T value, Class<R> returnType) {
+		return when(value, returnType);
 	}
 
 	/**

@@ -3,7 +3,7 @@ package com.frejdh.util.common.functional;
 import com.frejdh.util.common.functional.simple.TriFunction;
 import org.apiguardian.api.API;
 
-import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+import static com.frejdh.util.common.toolbox.CommonUtils.wrapAsRuntimeException;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 /**
@@ -17,9 +17,8 @@ public interface ThrowingTriFunction<T, U, V, R> extends org.apache.commons.lang
 	default R apply(T parameter1, U parameter2, V parameter3) {
 		try {
 			return applyThrows(parameter1, parameter2, parameter3);
-		} catch (final Exception e) {
-			sneakyThrow(e);
-			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
+		} catch (final Throwable e) {
+			throw wrapAsRuntimeException(e);
 		}
 	}
 
@@ -27,7 +26,8 @@ public interface ThrowingTriFunction<T, U, V, R> extends org.apache.commons.lang
 	 * Please don't use this directly. Please use {@link #apply(Object, Object, Object)} instead.
 	 */
 	@API(status = INTERNAL)
-	R applyThrows(T parameter1, U parameter2, V parameter3) throws Exception;
+	@SuppressWarnings("java:S112")
+	R applyThrows(T parameter1, U parameter2, V parameter3) throws Throwable;
 
 }
 

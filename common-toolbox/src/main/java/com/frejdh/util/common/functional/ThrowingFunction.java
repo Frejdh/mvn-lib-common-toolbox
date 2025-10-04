@@ -1,10 +1,10 @@
 package com.frejdh.util.common.functional;
 
-import java.util.function.Function;
-
 import org.apiguardian.api.API;
 
-import static com.frejdh.util.common.toolbox.CommonUtils.sneakyThrow;
+import java.util.function.Function;
+
+import static com.frejdh.util.common.toolbox.CommonUtils.wrapAsRuntimeException;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 /**
@@ -17,9 +17,8 @@ public interface ThrowingFunction<T, R> extends Function<T, R> {
 	default R apply(T parameter) {
 		try {
 			return applyThrows(parameter);
-		} catch (final Exception e) {
-			sneakyThrow(e);
-			throw new RuntimeException(e); // Never reached, but required for compilation nevertheless
+		} catch (final Throwable e) {
+			throw wrapAsRuntimeException(e);
 		}
 	}
 
@@ -27,7 +26,8 @@ public interface ThrowingFunction<T, R> extends Function<T, R> {
 	 * Please don't use this directly. Please use {@link #apply(Object)} instead.
 	 */
 	@API(status = INTERNAL)
-	R applyThrows(T parameter) throws Exception;
+	@SuppressWarnings("java:S112")
+	R applyThrows(T parameter) throws Throwable;
 
 }
 
